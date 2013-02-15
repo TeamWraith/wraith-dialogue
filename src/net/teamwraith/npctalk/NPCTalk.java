@@ -11,7 +11,7 @@ public class NPCTalk {
 
 		AppGUI App = new AppGUI();
 		
-		String x = "DERP";
+		String x = "TESTFILE";
 		Files files = new Files();
 		infoReadify readyInfo = new infoReadify();
 		InfoReadable readableInfo = new InfoReadable();
@@ -23,7 +23,6 @@ public class NPCTalk {
 			e.printStackTrace();
 		}
 		App.AppGUI();
-		System.out.println(App.getSpeech());
 		
 	}
 }
