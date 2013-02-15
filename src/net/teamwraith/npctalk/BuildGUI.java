@@ -83,6 +83,17 @@ public class BuildGUI {
 	public void setSpeechPanel(JScrollPane speechPanel) {
 		this.speechPanel = speechPanel;
 	}
+
+
+
+
+	public BuildGUI getGui() {
+		return gui;
+	}
+
+	public void setGui(BuildGUI gui) {
+		this.gui = gui;
+	}
 	
 	
 	
