@@ -1,4 +1,4 @@
-package net.teamwraith.npctalk;
+package net.teamwraith.npctalk.gui;
 
 import java.awt.BorderLayout;
 
@@ -14,8 +14,6 @@ import javax.swing.JTextField;
  */
 public class GUIBuild {
 	
-	private GUIBuild gui = this;
-	
 	private JFrame window;
 	private JTextArea speechField;
 	private JTextField nameField;
@@ -25,7 +23,7 @@ public class GUIBuild {
 	public GUIBuild() {
 		window = new JFrame("WraithDialogue");
 		infoPanel = new JPanel();
-		nameField = new JTextField("Unnamed" /* + NUMBER OF UNNAMED PERSON? */, 20);
+		nameField = new JTextField("Unnamed" /* NUMBER OF UNNAMED PERSON? */, 20);
 		speechField = new JTextArea(25, 60);
 		speechPanel = new JScrollPane(speechField, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		

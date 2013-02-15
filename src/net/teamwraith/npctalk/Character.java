@@ -20,7 +20,7 @@ public class Character {
 		HUMAN 		("Human"),
 		NORD 		("Nord"),
 		RHAZ_TUK 	("Rhaz Túk"),
-		OTHER 		("???");
+		OTHER		("???");
 		
 		private final String name;
 		
@@ -43,8 +43,9 @@ public class Character {
 		NEUTRAL_GOOD 	("Neutral Good", 	"?"),
 		CHAOTIC_GOOD 	("Chaotic Good", 	"?"),
 		LAWFUL_NEUTRAL 	("Lawful Neutral", 	"?"),
-		TRUE_NEUTRAL 	("True Neutral", 	"?"),
-		CHAOTIC_NEUTRAL ("Chaotic Neutral", "?"),
+		TRUE_NEUTRAL 	("True Neutral", 	
+			"True Neutral; the alignment of nature."),
+		CHAOTIC_NEUTRAL ("Chaotic Neutral",	"?"),
 		LAWFUL_EVIL 	("Lawful Evil", 	"?"),
 		NEUTRAL_EVIL 	("Neutral Evil", 	"?"),
 		CHAOTIC_EVIL 	("Chaotic Evil", 	"?");
@@ -67,7 +68,7 @@ public class Character {
 	}
 	
 	// --- Private: 
-	private String actorName = "undefined!";
+	private String name = "???";
 	private Sex sex = Sex.OTHER;
 	private Type type = Type.UNDEFINED;
 	private Species species = Species.OTHER;
@@ -76,8 +77,8 @@ public class Character {
 	
 
 	// --- Getters:
-	public String getActorName(){
-		return actorName;
+	public String getName(){
+		return name;
 	}
 	
 	public Sex getSex(){
@@ -97,8 +98,8 @@ public class Character {
 	}
 	
 	// --- Setters:
-	public void setActorName(String actorName){
-		this.actorName = actorName;
+	public void setName(String name){
+		this.name = name;
 	}
 	
 	public void setSex(Sex sex){
