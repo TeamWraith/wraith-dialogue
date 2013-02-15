@@ -15,7 +15,7 @@ public class AppGUI {
 			public void keyPressed(KeyEvent e) {
 				if ((e.isControlDown()&& e.getKeyCode() == KeyEvent.VK_S)) {
 					setSpeech(gui.getSpeechField().getText());
-					
+//Process the speech from the textbox on from here
 					System.out.println(getSpeech());
 				}
 			}
