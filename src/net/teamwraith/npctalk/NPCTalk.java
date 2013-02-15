@@ -5,25 +5,13 @@ import java.util.Scanner;
 
 public class NPCTalk {
 
-
-
 	public static void main(String[] args) {
-
-		AppGUI App = new AppGUI();
+		GUIListener app = new GUIListener();
 		
 		String x = "DERP";
-		Files files = new Files();
-		infoReadify readyInfo = new infoReadify();
-		InfoReadable readableInfo = new InfoReadable();
-
-		readyInfo.pull(readableInfo);
-		try {
-			files.fileCreate(x);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		App.AppGUI();
-		System.out.println(App.getSpeech());
+		Character test = new Character();
 		
+		System.out.println(app.getSpeech());
 	}
+	
 }
