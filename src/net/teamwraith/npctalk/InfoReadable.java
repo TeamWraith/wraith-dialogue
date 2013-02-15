@@ -6,6 +6,8 @@ public class InfoReadable {
 	private String actorName = "NOT NAMED";
 	private String sex = "NOT DEFINED";
 	private String type = "NOT DEFINED";
+	private String race = "NOT DEFINED";
+	private String age = "NOT DEFINED";
 	
 	
 	// --- Getters:
@@ -18,7 +20,12 @@ public class InfoReadable {
 	public String getType() {
 		return this.type;
 	}
-	
+	public String getRace() {
+		return this.race;
+	}
+	public String getAge() {
+		return this.age;
+	}
 	
 	// --- Setters:
 	public void setActorName(String actorName){
@@ -39,5 +46,11 @@ public class InfoReadable {
 			this.type = "Minor character";
 		else
 			this.type = "Undefined character";
+	}
+	public void setRace(String race){
+		this.race = race;
+	}
+	public void setAge(int age){
+		this.age = ""+age;
 	}
 }
