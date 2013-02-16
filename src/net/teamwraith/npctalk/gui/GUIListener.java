@@ -40,31 +40,32 @@ public class GUIListener {
 		});
 	}
 	
-	public void setSpeech(String speech){
+	public void setSpeech(String speech) {
 		this.speech = speech;
 	}
 	
-	public String getSpeech(){
+	public String getSpeech() {
 		return speech;
 	}
 	
-	public void runLines(File file){
+	public void runLines(File file) {
 		
 		List<String> speechContent = new ArrayList<String>(); 
-		int totalLines = gui.getSpeechField().getLineCount();
 		String line = null;
 		
-		for (int i=0; i < totalLines; i++) {
-			try{
-			int start = gui.getSpeechField().getLineStartOffset(i);
-			int end = gui.getSpeechField().getLineEndOffset(i);
-			line = getSpeech().substring(start, end);
-			speechContent.add(line);
+		for (int i=0; i < gui.getSpeechField().getLineCount(); i++) {
+			try {
+				int start = gui.getSpeechField().getLineStartOffset(i);
+				int end = gui.getSpeechField().getLineEndOffset(i);
+				line = getSpeech().substring(start, end);
+				speechContent.add(line);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
 		}
-		String[] lines = speechContent.toArray(new String[speechContent.size()]);
-		Files.writeRawFile (totalLines, lines, file);
+		
+		Files.writeRawFile(
+			speechContent.toArray(new String[speechContent.size()]), file
+		);
 	}
 }
