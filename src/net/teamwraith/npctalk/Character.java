@@ -2,10 +2,14 @@ package net.teamwraith.npctalk;
 
 public class Character {
 		
+	/**
+	 * A character's type, that is, whether it's 
+	 * a main character or a minor character.
+	 */
 	public enum Type {
 		MAIN, 
 		MINOR, 
-		UNDEFINED
+		OTHER
 	}
 	
 	public enum Sex {
@@ -14,13 +18,34 @@ public class Character {
 		OTHER
 	}
 	
+	/**
+	 * The character's species. Defaults to other,
+	 * which means it's undefined.
+	 * 
+	 * These are the species of <i>Lands of Loriana</i>.
+	 * Later on, these will be modifiable, but for now
+	 * they'll remain specific.
+	 */
 	public enum Species {
 		DWARF 		("Dwarf"),
 		ELF 		("Elf"),
 		HUMAN 		("Human"),
 		NORD 		("Nord"),
+		/**
+		 * The Rhaz Túk are the main antagonists 
+		 * of <i>Lands of Loriana</i>.
+		 * 
+		 * @param name - Returns a print-friendly
+		 * version of the name (that is, with the
+		 * <i>ú</i>).
+		 */
 		RHAZ_TUK 	("Rhaz Túk"),
-		OTHER		("???");
+		/**
+		 * This is what a character's species 
+		 * defaults to. If it's not set, it
+		 * probably doesn't matter.
+		 */
+		OTHER		("undefined");
 		
 		private final String name;
 		
@@ -44,7 +69,7 @@ public class Character {
 		CHAOTIC_GOOD 	("Chaotic Good", 	"?"),
 		LAWFUL_NEUTRAL 	("Lawful Neutral", 	"?"),
 		TRUE_NEUTRAL 	("True Neutral", 	
-			"True Neutral; the alignment of nature."),
+			"True neutral, the alignment of nature."),
 		CHAOTIC_NEUTRAL ("Chaotic Neutral",	"?"),
 		LAWFUL_EVIL 	("Lawful Evil", 	"?"),
 		NEUTRAL_EVIL 	("Neutral Evil", 	"?"),
@@ -70,11 +95,34 @@ public class Character {
 	// --- Private: 
 	private String name = "???";
 	private Sex sex = Sex.OTHER;
-	private Type type = Type.UNDEFINED;
+	private Type type = Type.OTHER;
 	private Species species = Species.OTHER;
 	private Morality morality = Morality.TRUE_NEUTRAL;
 	
+	// --- Constructors:
+	public Character(String name, Sex sex, Species species, Type type, Morality morality) {
+		this (name,sex,species,type);
+		this.morality = morality;
+	}
 	
+	public Character(String name, Sex sex, Species species, Type type) {
+		this (name, sex, species);
+		this.type = type;
+	}
+	
+	/**
+	 * The bare minimum of info.
+	 */
+	public Character(String name, Sex sex, Species species) {
+		this.name = name;
+		this.sex = sex;
+		this.species = species;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 
 	// --- Getters:
 	public String getName(){
@@ -117,4 +165,5 @@ public class Character {
 	public void setMorality(Morality morality) {
 		this.morality = morality;
 	}
+	
 }
