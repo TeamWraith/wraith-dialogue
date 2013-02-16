@@ -1,0 +1,6 @@
+bin
+.settings
+*.jar
+*.txt
+.classpath
+.metadata
