@@ -24,15 +24,15 @@ public class GUIBuild {
 		window = new JFrame("WraithDialogue");
 		infoPanel = new JPanel();
 		nameField = new JTextField("Unnamed" /* NUMBER OF UNNAMED PERSON? */, 20);
-		speechField = new JTextArea(25, 60);
-		speechPanel = new JScrollPane(speechField, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		speechField = new JTextArea();
+		speechPanel = new JScrollPane(speechField, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		speechPanel.setSize(640, 360);
-		infoPanel.add(nameField, BorderLayout.CENTER);
+		
+		infoPanel.add(nameField, BorderLayout.NORTH);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.add(infoPanel, BorderLayout.PAGE_START);
-		window.add(speechField, BorderLayout.AFTER_LAST_LINE);
-		window.pack();
+		window.add(speechPanel, BorderLayout.CENTER);
+		window.setSize(640, 360);
 		window.setVisible(true);
 	}
 	
