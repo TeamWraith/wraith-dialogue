@@ -22,7 +22,6 @@ public class GUIListener {
 	
 	private String speech;
 	private GUIBuild gui;
-	private Files files;
 	
 	public GUIListener() {
 		gui = new GUIBuild();
@@ -30,6 +29,7 @@ public class GUIListener {
 		gui.getSpeechField().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+					
 					setSpeech(gui.getSpeechField().getText());
 					runLines(new File("TEST01.txt"));
 					System.out.println(speech);
@@ -48,13 +48,14 @@ public class GUIListener {
 	
 	public void runLines(File file){
 		int totalLines = gui.getSpeechField().getLineCount();
+		String[] line = null;
 		
 		for (int i=0; i < totalLines; i++) {
 			try{
 			int start = gui.getSpeechField().getLineStartOffset(i);
 			int end = gui.getSpeechField().getLineEndOffset(i);
-			String line = getSpeech().substring(start, end);
-			files.writeRawFile (line, file);
+			line[i] = getSpeech().substring(start, end);
+			Files.writeRawFile (totalLines, line, file);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}

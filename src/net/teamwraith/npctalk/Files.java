@@ -7,25 +7,20 @@ import java.io.IOException;
 
 public class Files {
 	
-	public static void writeRawFile (String str, String fileName) {
-		writeRawFile(str, new File(fileName + ".txt"));
+	public static void writeRawFile (int lines, String[] str, String fileName) {
+		writeRawFile(lines, str, new File(fileName + ".txt"));
 	}
 	
-	public static void writeRawFile (String str, File file) {
+	public static void writeRawFile (int lines, String[] str, File file) {
 		BufferedWriter writer;
-		
-		
-		
-		
-		
-		
-		
-		
+
 		try {
 			writer = new BufferedWriter(new FileWriter(file));
 			
 			file.createNewFile();
-			writer.append(str + "\n");
+		for(int l=0; l < lines; l++){
+			writer.append(str[l] + "\n");
+		}
 			//FOR DEBUGGING
 			//System.out.println("wrote in file: " + file.getAbsolutePath());
 			writer.close();
