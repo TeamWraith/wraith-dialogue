@@ -3,7 +3,9 @@ package net.teamwraith.npctalk.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -15,26 +17,75 @@ import javax.swing.JTextField;
  */
 public class GUIBuild {
 	
+	//initial window
 	private JFrame window;
-	private JTextArea speechField;
-	private JTextField nameField;
+	
+	//panels within the window
 	private JPanel infoPanel;
 	private JScrollPane speechPanel;
 	
+	//infoPanel - content
+	private JCheckBox branchCheck;
+	private JLabel parentLab;
+	private JLabel actorLab;
+	private JLabel sceneLab;
+	private JTextField parentField;
+	private JTextField actorField;
+	
+	//speechPanel - textArea
+	private JTextArea speechField;
+	
 	public GUIBuild() {
-		window = new JFrame("WraithDialogue");
-		infoPanel = new JPanel();
-		nameField = new JTextField("Unnamed" /* NUMBER OF UNNAMED PERSON? */, 20);
-		speechField = new JTextArea();
-		speechPanel = new JScrollPane(speechField, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		infoPanel.add(nameField, BorderLayout.NORTH);
-		window.setMinimumSize(new Dimension(350, 120));
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//initial window
+		window = new JFrame("WraithDialogue");
+		
+		//panels within the window
+		infoPanel = new JPanel();
+		speechPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		//infoPanel - content
+		branchCheck = new JCheckBox("is brancher");
+		
+		parentLab = new JLabel("Parent: ");
+		parentField = new JTextField("ParentSpeech", 15);
+		
+		actorLab = new JLabel("Actor: ");
+		actorField = new JTextField("Actor", 15);
+		
+		sceneLab = new JLabel("Scene: " + "derp.01"/*Later; have a method giving in the sceneinfo*/);
+		
+
+		
+		//speechPanel - textArea
+		speechField = new JTextArea();
+		
+		//Adds panels to window
 		window.add(infoPanel, BorderLayout.PAGE_START);
 		window.add(speechPanel, BorderLayout.CENTER);
+		
+		//Adds content to infoPanel
+		infoPanel.add(branchCheck, BorderLayout.NORTH);
+		
+		infoPanel.add(parentLab, BorderLayout.NORTH);
+		infoPanel.add(parentField, BorderLayout.NORTH);
+		
+		infoPanel.add(actorLab, BorderLayout.NORTH);
+		infoPanel.add(actorField, BorderLayout.NORTH);
+		
+		infoPanel.add(sceneLab, BorderLayout.NORTH);
+		
+		//Adds textArea to speechPanel
+		speechPanel.setViewportView(speechField);
+
+		//Specifies options for content
+		window.setMinimumSize(new Dimension(640, 120));
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(640, 360);
 		window.setVisible(true);
+		
+		
+		
 	}
 	
 	public JFrame getWindow() {
@@ -54,11 +105,11 @@ public class GUIBuild {
 	}
 
 	public JTextField getNameField() {
-		return nameField;
+		return actorField;
 	}
 
 	public void setNameField(JTextField nameField) {
-		this.nameField = nameField;
+		this.actorField = nameField;
 	}
 
 	public JPanel getInfoPanel() {

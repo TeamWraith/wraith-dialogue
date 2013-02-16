@@ -13,7 +13,7 @@ public class Files {
 	
 	public static void writeRawFile (int lines, String[] str, File file) {
 		BufferedWriter writer;
-
+		
 		try {
 			writer = new BufferedWriter(new FileWriter(file));
 			
