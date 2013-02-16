@@ -2,6 +2,12 @@ package net.teamwraith.npctalk.gui;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.text.BadLocationException;
+
+import net.teamwraith.npctalk.Files;
 
 /**
  * This is what <i>interacts</i> with the GUI;
@@ -16,6 +22,7 @@ public class GUIListener {
 	
 	private String speech;
 	private GUIBuild gui;
+	private Files files;
 	
 	public GUIListener() {
 		gui = new GUIBuild();
@@ -23,8 +30,8 @@ public class GUIListener {
 		gui.getSpeechField().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
-					speech = gui.getSpeechField().getText();
-					
+					setSpeech(gui.getSpeechField().getText());
+					runLines(new File("TEST01.txt"));
 					System.out.println(speech);
 				}
 			}
@@ -39,4 +46,19 @@ public class GUIListener {
 		return speech;
 	}
 	
+	public void runLines(File file){
+		int totalLines = gui.getSpeechField().getLineCount();
+		
+		for (int i=0; i < totalLines; i++) {
+			try{
+			int start = gui.getSpeechField().getLineStartOffset(i);
+			int end = gui.getSpeechField().getLineEndOffset(i);
+			String line = getSpeech().substring(start, end);
+			files.writeRawFile (line, file);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
 }

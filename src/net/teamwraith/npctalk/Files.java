@@ -14,10 +14,21 @@ public class Files {
 	public static void writeRawFile (String str, File file) {
 		BufferedWriter writer;
 		
+		
+		
+		
+		
+		
+		
+		
 		try {
 			writer = new BufferedWriter(new FileWriter(file));
+			
 			file.createNewFile();
-			writer.write(str);
+			writer.append(str + "\n");
+			//FOR DEBUGGING
+			//System.out.println("wrote in file: " + file.getAbsolutePath());
+			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

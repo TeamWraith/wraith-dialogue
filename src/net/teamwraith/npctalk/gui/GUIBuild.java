@@ -1,6 +1,7 @@
 package net.teamwraith.npctalk.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,8 +28,8 @@ public class GUIBuild {
 		speechField = new JTextArea();
 		speechPanel = new JScrollPane(speechField, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		
 		infoPanel.add(nameField, BorderLayout.NORTH);
+		window.setMinimumSize(new Dimension(350, 120));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.add(infoPanel, BorderLayout.PAGE_START);
 		window.add(speechPanel, BorderLayout.CENTER);
