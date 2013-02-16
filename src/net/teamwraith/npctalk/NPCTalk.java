@@ -9,6 +9,5 @@ public class NPCTalk {
 		GUIListener app = new GUIListener();
 		
 		Character test = new Character("Ghat", Sex.MALE, Species.HUMAN);
-
 	}
 }

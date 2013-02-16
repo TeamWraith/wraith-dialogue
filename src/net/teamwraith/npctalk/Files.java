@@ -7,22 +7,37 @@ import java.io.IOException;
 
 public class Files {
 	
-	public static void writeRawFile (int lines, String[] str, String fileName) {
-		writeRawFile(lines, str, new File(fileName + ".txt"));
+	/**
+	 * Calls {@link #writeRawFile(String[], File)}
+	 * but with a string as the filename. Merely
+	 * for convenience.
+	 */
+	public static void writeRawFile (String[] str, String fileName) {
+		writeRawFile(str, new File(fileName + ".txt"));
 	}
 	
-	public static void writeRawFile (int lines, String[] str, File file) {
+	/**
+	 * Writes lines provided as raw text. Does NO
+	 * formatting at all, and is (probably)
+	 * temporary.
+	 * 
+	 * @param lines - array of the lines to be
+	 * written to a file.
+	 * @param file - the file to write to; if it
+	 * doesn't exist, it'll be created.
+	 */
+	public static void writeRawFile (String[] lines, File file) {
 		BufferedWriter writer;
 		
 		try {
 			writer = new BufferedWriter(new FileWriter(file));
-			
 			file.createNewFile();
-		for(int l=0; l < lines; l++){
-			writer.append(str[l]);
-		}
-			//FOR DEBUGGING
-			//System.out.println("wrote in file: " + file.getAbsolutePath());
+			
+			for(int i = 0; i < lines.length; i++) {
+				writer.append(lines[i]);
+			}
+		
+			System.out.println("wrote in file: " + file.getAbsolutePath());
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
