@@ -4,6 +4,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.text.BadLocationException;
 
@@ -47,19 +49,22 @@ public class GUIListener {
 	}
 	
 	public void runLines(File file){
+		
+		List<String> speechContent = new ArrayList<String>(); 
 		int totalLines = gui.getSpeechField().getLineCount();
-		String[] line = null;
+		String line = null;
 		
 		for (int i=0; i < totalLines; i++) {
 			try{
 			int start = gui.getSpeechField().getLineStartOffset(i);
 			int end = gui.getSpeechField().getLineEndOffset(i);
-			line[i] = getSpeech().substring(start, end);
-			Files.writeRawFile (totalLines, line, file);
+			line = getSpeech().substring(start, end);
+			speechContent.add(line);
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
-
 		}
+		String[] lines = speechContent.toArray(new String[speechContent.size()]);
+		Files.writeRawFile (totalLines, lines, file);
 	}
 }

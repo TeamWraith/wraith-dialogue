@@ -19,7 +19,7 @@ public class Files {
 			
 			file.createNewFile();
 		for(int l=0; l < lines; l++){
-			writer.append(str[l] + "\n");
+			writer.append(str[l]);
 		}
 			//FOR DEBUGGING
 			//System.out.println("wrote in file: " + file.getAbsolutePath());
