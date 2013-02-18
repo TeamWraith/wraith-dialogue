@@ -9,8 +9,8 @@ public class Files {
 	
 	/**
 	 * Calls {@link #writeRawFile(String[], File)}
-	 * but with a string as the filename. Merely
-	 * for convenience.
+	 * but with a string as the filename (.txt 
+	 * appended). Merely for convenience.
 	 */
 	public static void writeRawFile (String[] str, String fileName) {
 		writeRawFile(str, new File(fileName + ".txt"));

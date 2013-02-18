@@ -3,9 +3,11 @@ package net.teamwraith.npctalk.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTree;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -13,14 +15,13 @@ import javax.swing.JTextField;
 
 /**
  * Builds the GUI.
- * Horrible to read.
  */
 public class GUIBuild {
 	
-	//initial window
+	//node window
 	private JFrame window;
 	
-	//panels within the window
+	//panels within the node window
 	private JPanel infoPanel;
 	private JScrollPane speechPanel;
 	
@@ -35,12 +36,33 @@ public class GUIBuild {
 	//speechPanel - textArea
 	private JTextArea speechField;
 	
-	public GUIBuild() {
+	private JTree tree;
+	private String[] data = { "one", "two", "three", "four" };
+	
+	public GUIBuild(){
+		window = new JFrame("Wraith Dialogue");
+		tree = new JTree(data);
 		
-		//initial window
-		window = new JFrame("WraithDialogue");
+		window.add(tree, BorderLayout.CENTER);
 		
-		//panels within the window
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setSize(840, 560);
+		window.setVisible(true);		
+	}
+	
+	public JTree getTree() {
+		return tree;
+	}
+
+	public void setTree(JTree tree) {
+		this.tree = tree;
+	}
+
+	public void buildNodeFrame() {
+		//node window
+		window = new JFrame("Node Edit");
+
+		//panels within the node window
 		infoPanel = new JPanel();
 		speechPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -53,14 +75,12 @@ public class GUIBuild {
 		actorLab = new JLabel("Actor: ");
 		actorField = new JTextField("Actor", 15);
 		
-		sceneLab = new JLabel("Scene: " + "derp.01"/*Later; have a method giving in the sceneinfo*/);
-		
-
+		sceneLab = new JLabel("Scene: " + "derp.01"); //Later, have a method giving in the sceneinfo
 		
 		//speechPanel - textArea
 		speechField = new JTextArea();
 		
-		//Adds panels to window
+		//Adds panels to node window
 		window.add(infoPanel, BorderLayout.PAGE_START);
 		window.add(speechPanel, BorderLayout.CENTER);
 		
@@ -78,14 +98,14 @@ public class GUIBuild {
 		//Adds textArea to speechPanel
 		speechPanel.setViewportView(speechField);
 
-		//Specifies options for content
 		window.setMinimumSize(new Dimension(640, 120));
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		window.setSize(640, 360);
-		window.setVisible(true);
-		
-		
-		
+		window.setVisible(true);	
+	}
+	
+	public boolean isNodeEditFocused() {
+		return window.getTitle() == "Node Edit" && window.isFocused();
 	}
 	
 	public JFrame getWindow() {
@@ -127,5 +147,5 @@ public class GUIBuild {
 	public void setSpeechPanel(JScrollPane speechPanel) {
 		this.speechPanel = speechPanel;
 	}
-	
+
 }

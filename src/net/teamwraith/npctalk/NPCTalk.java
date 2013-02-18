@@ -7,7 +7,5 @@ public class NPCTalk {
 
 	public static void main(String[] args) {
 		GUIListener app = new GUIListener();
-		
-		Character test = new Character("Ghat", Sex.MALE, Species.HUMAN);
 	}
 }

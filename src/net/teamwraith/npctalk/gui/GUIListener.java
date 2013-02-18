@@ -3,11 +3,13 @@ package net.teamwraith.npctalk.gui;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.teamwraith.npctalk.Files;
 
@@ -28,16 +30,36 @@ public class GUIListener {
 	public GUIListener() {
 		gui = new GUIBuild();
 		
-		gui.getSpeechField().addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
-					
-					setSpeech(gui.getSpeechField().getText());
-					runLines(new File("TEST01.txt"));
-					System.out.println(speech);
-				}
+		
+		gui.getTree().addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+		        DefaultMutableTreeNode node = (DefaultMutableTreeNode) 
+		        	gui.getTree().getLastSelectedPathComponent();
+
+		        /* if nothing is selected */ 
+		        if (node == null) return;
+
+		        /* retrieve the node that was selected */ 
+		        Object nodeInfo = node.getUserObject();
+		        /* React to the node selection. */
+		        System.out.println("Changed index");
+		        gui.buildNodeFrame();
 			}
 		});
+
+		
+		if(gui.isNodeEditFocused()){
+			gui.getSpeechField().addKeyListener(new KeyAdapter() {
+				public void keyPressed(KeyEvent e) {
+					if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+						
+						setSpeech(gui.getSpeechField().getText());
+						runLines(new File("TEST01.txt"));
+						System.out.println(speech);
+					}
+				}
+			});
+		}
 	}
 	
 	public void setSpeech(String speech) {

@@ -1,5 +1,9 @@
 package net.teamwraith.npctalk;
 
+/**
+ * Represents a character that would appear in
+ * dialogue. 
+ */
 public class Character {
 		
 	/**
@@ -101,7 +105,7 @@ public class Character {
 	
 	// --- Constructors:
 	public Character(String name, Sex sex, Species species, Type type, Morality morality) {
-		this (name,sex,species,type);
+		this (name, sex, species, type);
 		this.morality = morality;
 	}
 	
