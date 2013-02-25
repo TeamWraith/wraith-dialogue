@@ -1,5 +1,7 @@
 package net.teamwraith.npctalk.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -30,37 +32,51 @@ public class GUIListener {
 	public GUIListener() {
 		gui = new GUIBuild();
 		
-		
+	/**	
 		gui.getTree().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
 		        DefaultMutableTreeNode node = (DefaultMutableTreeNode) 
 		        	gui.getTree().getLastSelectedPathComponent();
 
 		        /* if nothing is selected */ 
-		        if (node == null) return;
+	/**	        if (node == null) return;
 
 		        /* retrieve the node that was selected */ 
-		        Object nodeInfo = node.getUserObject();
+	/**			Object nodeInfo = node.getUserObject();
 		        /* React to the node selection. */
-		        System.out.println("Changed index");
+	/**	        System.out.println("Changed index to: " + nodeInfo);
 		        gui.buildNodeFrame();
+		        nodeFrameListeners();
+			}
+		}); */
+
+
+		}
+
+	public void nodeFrameListeners(){
+		
+		gui.getSpeechField().addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
+					
+					setSpeech(gui.getSpeechField().getText());
+					runLines(new File("TEST01.txt"));
+					System.out.println(speech);
+					gui.getnodeFrame().dispose();
+				}
 			}
 		});
-
-		
-		if(gui.isNodeEditFocused()){
-			gui.getSpeechField().addKeyListener(new KeyAdapter() {
-				public void keyPressed(KeyEvent e) {
-					if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
-						
-						setSpeech(gui.getSpeechField().getText());
-						runLines(new File("TEST01.txt"));
-						System.out.println(speech);
-					}
-				}
-			});
-		}
+		gui.getsaveButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				setSpeech(gui.getSpeechField().getText());
+				runLines(new File("TEST01.txt"));
+				System.out.println(speech);
+				gui.getnodeFrame().dispose();
+			}
+		});
 	}
+	
 	
 	public void setSpeech(String speech) {
 		this.speech = speech;

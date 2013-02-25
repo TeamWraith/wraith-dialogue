@@ -2,11 +2,21 @@ package net.teamwraith.npctalk.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
 
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,11 +27,25 @@ import javax.swing.JTextField;
  * Builds the GUI.
  */
 public class GUIBuild {
+	//main window
+	private JFrame mainFrame;
+	
+	private JMenuBar mainFrameMenuBar;
+	
+	private JMenu file = new JMenu("File");
+	
+	private JMenuItem newDialogue =  new JMenuItem("New dialogue"); 
+	private JMenuItem exit =  new JMenuItem("Exit"); 
+	
+	private JTree tree;
+	private List<String> treeData = new ArrayList<String>();
+	private String rootName;
+	
 	
 	//node window
-	private JFrame window;
+	private JFrame nodeFrame;
 	
-	//panels within the node window
+	//panels within nodeFrame
 	private JPanel infoPanel;
 	private JScrollPane speechPanel;
 	
@@ -36,33 +60,41 @@ public class GUIBuild {
 	//speechPanel - textArea
 	private JTextArea speechField;
 	
-	private JTree tree;
-	private String[] data = { "one", "two", "three", "four" };
+	
+	//save node button
+	private JButton saveButton;
 	
 	public GUIBuild(){
-		window = new JFrame("Wraith Dialogue");
-		tree = new JTree(data);
+		mainFrame = new JFrame("Wraith Dialogue");
 		
-		window.add(tree, BorderLayout.CENTER);
+		mainFrameMenuBar = new JMenuBar();
 		
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(840, 560);
-		window.setVisible(true);		
+		
+		mainFrame.setJMenuBar(mainFrameMenuBar);
+		mainFrameMenuBar.add(file);
+		file.add(newDialogue);
+		file.add(exit);
+
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setSize(840, 560);
+		mainFrame.setVisible(true);
+		
+		
+		newDialogue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buildNodeFrame();
+			}
+		});
+		
 	}
 	
-	public JTree getTree() {
-		return tree;
-	}
-
-	public void setTree(JTree tree) {
-		this.tree = tree;
-	}
-
+	
+	
 	public void buildNodeFrame() {
 		//node window
-		window = new JFrame("Node Edit");
+		nodeFrame = new JFrame("Node Edit");
 
-		//panels within the node window
+		//panels within the node nodeFrame
 		infoPanel = new JPanel();
 		speechPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -75,14 +107,16 @@ public class GUIBuild {
 		actorLab = new JLabel("Actor: ");
 		actorField = new JTextField("Actor", 15);
 		
-		sceneLab = new JLabel("Scene: " + "derp.01"); //Later, have a method giving in the sceneinfo
+		sceneLab = new JLabel("Scene: " + "derp.01"); //Later, have parameters or a method giving in the scenenumber
 		
+		saveButton = new JButton("Save Node");
 		//speechPanel - textArea
 		speechField = new JTextArea();
 		
-		//Adds panels to node window
-		window.add(infoPanel, BorderLayout.PAGE_START);
-		window.add(speechPanel, BorderLayout.CENTER);
+		//Adds panels to node nodeFrame
+		nodeFrame.add(infoPanel, BorderLayout.PAGE_START);
+		nodeFrame.add(speechPanel, BorderLayout.CENTER);
+		nodeFrame.add(saveButton, BorderLayout.PAGE_END);
 		
 		//Adds content to infoPanel
 		infoPanel.add(branchCheck, BorderLayout.NORTH);
@@ -98,22 +132,26 @@ public class GUIBuild {
 		//Adds textArea to speechPanel
 		speechPanel.setViewportView(speechField);
 
-		window.setMinimumSize(new Dimension(640, 120));
-		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		window.setSize(640, 360);
-		window.setVisible(true);	
+		nodeFrame.setMinimumSize(new Dimension(640, 120));
+		nodeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		nodeFrame.setSize(640, 360);
+		nodeFrame.setVisible(true);	
 	}
 	
-	public boolean isNodeEditFocused() {
-		return window.getTitle() == "Node Edit" && window.isFocused();
-	}
-	
-	public JFrame getWindow() {
-		return window;
+	public JButton getsaveButton() {
+		return saveButton;
 	}
 
-	public void setWindow(JFrame window) {
-		this.window = window;
+	public void setsaveButton(JButton saveButton) {
+		this.saveButton = saveButton;
+	}
+	
+	public JFrame getnodeFrame() {
+		return nodeFrame;
+	}
+
+	public void setnodeFrame(JFrame nodeFrame) {
+		this.nodeFrame = nodeFrame;
 	}
 
 	public JTextArea getSpeechField() {
@@ -148,4 +186,9 @@ public class GUIBuild {
 		this.speechPanel = speechPanel;
 	}
 
+	public boolean isNodeEditFocused() {
+		return nodeFrame.isFocused();
+	}
+	
+	
 }
