@@ -27,6 +27,7 @@ import javax.swing.JTextField;
  * Builds the GUI.
  */
 public class GUIBuild {
+	
 	//main window
 	private JFrame mainFrame;
 	
@@ -36,10 +37,11 @@ public class GUIBuild {
 	
 	private JMenuItem newDialogue =  new JMenuItem("New dialogue"); 
 	private JMenuItem exit =  new JMenuItem("Exit"); 
-	
-	private JTree tree;
+
 	private List<String> treeData = new ArrayList<String>();
 	private String rootName;
+	
+	private DialogueTree tree = new DialogueTree();
 	
 	
 	//node window
@@ -65,10 +67,12 @@ public class GUIBuild {
 	private JButton saveButton;
 	
 	public GUIBuild(){
+		
 		mainFrame = new JFrame("Wraith Dialogue");
 		
 		mainFrameMenuBar = new JMenuBar();
 		
+		tree.createAndShowTree(mainFrame);
 		
 		mainFrame.setJMenuBar(mainFrameMenuBar);
 		mainFrameMenuBar.add(file);
@@ -136,6 +140,11 @@ public class GUIBuild {
 		nodeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		nodeFrame.setSize(640, 360);
 		nodeFrame.setVisible(true);	
+	}
+	
+	
+	public DialogueTree getDialogueTree(){
+		return tree;
 	}
 	
 	public JButton getsaveButton() {
