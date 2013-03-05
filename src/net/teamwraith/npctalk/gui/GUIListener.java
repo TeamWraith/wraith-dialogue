@@ -32,6 +32,7 @@ public class GUIListener {
 	public GUIListener() {
 		gui = new GUIBuild();
 		
+		gui.buildNodeFrame();
 	/**	
 		gui.getTree().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {

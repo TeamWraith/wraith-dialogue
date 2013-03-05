@@ -143,6 +143,10 @@ public class GUIBuild {
 	}
 	
 	
+	public void updateTree(DialogueTree tree){
+	
+	}
+	
 	public DialogueTree getDialogueTree(){
 		return tree;
 	}
