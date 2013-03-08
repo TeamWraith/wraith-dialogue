@@ -6,7 +6,13 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 
@@ -30,7 +38,8 @@ public class FrameTest extends JFrame {
 	private JPanel contentPane;
 	private JTree tree;
 	private DefaultMutableTreeNode rootNode;
-	
+	private List<DefaultMutableTreeNode> nodeList;
+	private JButton TEST;
 	
 	
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -70,11 +79,20 @@ public class FrameTest extends JFrame {
 		
 		tree = new JTree();
 		
+		nodeList = new ArrayList<DefaultMutableTreeNode>();
+		
+		TEST = new JButton("TEST");
+		
+		TEST.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addNodes();
+			}
+		});
+		
 		/**
 		 * A possible way of changing to a new root, as it will (eventually) be called by the 'new Dialogue' method, which will also call 'clearAll()'.
 		 */
-		setRoot(JOptionPane.showInputDialog(null, "New root name: ", 
-				"New Root", 1));
+		setRoot();
 		
 		/**
 		 * Simple test with nodes. TODO make nodes dynamic.
@@ -122,11 +140,16 @@ public class FrameTest extends JFrame {
 		));
 		tree.setEditable(true); // Possibly we could make the edited object in the tree update from this, as well as the node editor frame.
 		contentPane.add(treePanel);
+		contentPane.add(TEST, BorderLayout.PAGE_END);
 		treePanel.setViewportView(tree);
 		
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{contentPane})); // TODO understand this line of code.
 	}
 
+	/**
+	 * For modifying the root nodes name.
+	 */
+	
 	public void setRoot(DefaultMutableTreeNode rootNode) {
 		this.rootNode = rootNode;
 		tree.setVisible(true);
@@ -137,13 +160,46 @@ public class FrameTest extends JFrame {
 		tree.setVisible(true);
 	}
 	
+	public void setRoot(){
+		setRoot(JOptionPane.showInputDialog(null, "New root name: ", "New Root", 1));
+	}
+	
+	/**
+	 *  Methods for clearing the tree, evantually also to start a new one.
+	 */
 	public void clearNodes() {
 	    rootNode.removeAllChildren();
 	  }
+
 	public void clearAll(){
 		clearNodes();
 		tree.setVisible(false);
 	}
+
+	public void newTree(){
+		clearAll();
+		setRoot();
+		tree.setModel(new DefaultTreeModel(
+				new DefaultMutableTreeNode(rootNode)));
+
+	}
 	
 	
+	
+	public void addNodes(){
+		for(int i = 0; i < nodeList.toArray().length; i++){
+			nodeList.toArray()[i] = new DefaultMutableTreeNode(new SpeechNode());
+			rootNode.add((DefaultMutableTreeNode) nodeList.toArray()[i]);
+		}
+	}
+	
+
+	
+	class SpeechNode extends DefaultMutableTreeNode{
+		
+		public SpeechNode() { //Constructor
+			
+		}
+		
+	}
 }
