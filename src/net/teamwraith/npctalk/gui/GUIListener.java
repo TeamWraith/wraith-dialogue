@@ -8,10 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.teamwraith.npctalk.Files;
 
@@ -31,8 +28,7 @@ public class GUIListener {
 	
 	public GUIListener() {
 		gui = new GUIBuild();
-		
-		gui.buildNodeFrame();
+
 	/**	
 		gui.getTree().addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
@@ -50,30 +46,36 @@ public class GUIListener {
 		        nodeFrameListeners();
 			}
 		}); */
-
-
+	
+	gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			gui.buildNodeFrame(getGUIListener());
 		}
+	});
+}
+
+
 
 	public void nodeFrameListeners(){
 		
-		gui.getSpeechField().addKeyListener(new KeyAdapter() {
+		gui.getNodeFrame().getSpeechField().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
 					
-					setSpeech(gui.getSpeechField().getText());
+					setSpeech(gui.getNodeFrame().getSpeechField().getText());
 					runLines(new File("TEST01.txt"));
 					System.out.println(speech);
-					gui.getnodeFrame().dispose();
+					gui.getNodeFrame().dispose();
 				}
 			}
 		});
-		gui.getsaveButton().addActionListener(new ActionListener() {
+		gui.getNodeFrame().getSaveButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				setSpeech(gui.getSpeechField().getText());
+				setSpeech(gui.getNodeFrame().getSpeechField().getText());
 				runLines(new File("TEST01.txt"));
 				System.out.println(speech);
-				gui.getnodeFrame().dispose();
+				gui.getNodeFrame().dispose();
 			}
 		});
 	}
@@ -92,10 +94,10 @@ public class GUIListener {
 		List<String> speechContent = new ArrayList<String>(); 
 		String line = null;
 		
-		for (int i=0; i < gui.getSpeechField().getLineCount(); i++) {
+		for (int i=0; i < gui.getNodeFrame().getSpeechField().getLineCount(); i++) {
 			try {
-				int start = gui.getSpeechField().getLineStartOffset(i);
-				int end = gui.getSpeechField().getLineEndOffset(i);
+				int start = gui.getNodeFrame().getSpeechField().getLineStartOffset(i);
+				int end = gui.getNodeFrame().getSpeechField().getLineEndOffset(i);
 				line = getSpeech().substring(start, end);
 				speechContent.add(line);
 			} catch (BadLocationException e) {
@@ -107,4 +109,5 @@ public class GUIListener {
 			speechContent.toArray(new String[speechContent.size()]), file
 		);
 	}
+	public GUIListener getGUIListener() { return this; }
 }
