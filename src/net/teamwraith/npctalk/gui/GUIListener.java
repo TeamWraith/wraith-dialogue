@@ -35,33 +35,30 @@ public class GUIListener {
 		        DefaultMutableTreeNode node = (DefaultMutableTreeNode) 
 		        	gui.getTree().getLastSelectedPathComponent();
 
-		        /* if nothing is selected */ 
-	/**	        if (node == null) return;
+		        // if nothing is selected
+		        if (node == null) return;
 
-		        /* retrieve the node that was selected */ 
-	/**			Object nodeInfo = node.getUserObject();
-		        /* React to the node selection. */
-	/**	        System.out.println("Changed index to: " + nodeInfo);
+		        // retrieve the node that was selected 
+				Object nodeInfo = node.getUserObject();
+		        // React to the node selection.
+		        System.out.println("Changed index to: " + nodeInfo);
 		        gui.buildNodeFrame();
 		        nodeFrameListeners();
 			}
-		}); */
+		}); 
+	*/
 	
-	gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			gui.buildNodeFrame(getGUIListener());
-		}
-	});
-}
-
-
-
-	public void nodeFrameListeners(){
-		
+		gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gui.buildNodeFrame(getGUIListener());
+			}
+		});
+	}
+	
+	public void enableNodeFrameListeners(){
 		gui.getNodeFrame().getSpeechField().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
-					
 					setSpeech(gui.getNodeFrame().getSpeechField().getText());
 					runLines(new File("TEST01.txt"));
 					System.out.println(speech);
@@ -69,9 +66,9 @@ public class GUIListener {
 				}
 			}
 		});
+		
 		gui.getNodeFrame().getSaveButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				setSpeech(gui.getNodeFrame().getSpeechField().getText());
 				runLines(new File("TEST01.txt"));
 				System.out.println(speech);
@@ -90,11 +87,10 @@ public class GUIListener {
 	}
 	
 	public void runLines(File file) {
-		
 		List<String> speechContent = new ArrayList<String>(); 
 		String line = null;
 		
-		for (int i=0; i < gui.getNodeFrame().getSpeechField().getLineCount(); i++) {
+		for (int i = 0; i < gui.getNodeFrame().getSpeechField().getLineCount(); i++) {
 			try {
 				int start = gui.getNodeFrame().getSpeechField().getLineStartOffset(i);
 				int end = gui.getNodeFrame().getSpeechField().getLineEndOffset(i);

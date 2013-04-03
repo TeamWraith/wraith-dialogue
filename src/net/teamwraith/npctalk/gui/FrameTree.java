@@ -58,7 +58,7 @@ public class FrameTree extends JFrame {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
 	 */

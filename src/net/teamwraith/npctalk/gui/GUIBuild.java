@@ -22,21 +22,13 @@ public class GUIBuild {
 	
 	public void buildNodeFrame(GUIListener guiListener) {
 		nodeFrame = new FrameNode();
-		guiListener.nodeFrameListeners();
+		guiListener.enableNodeFrameListeners();
 	}
-	
-	
-	
-	
+
 	public FrameNode getNodeFrame() { return nodeFrame; }
 	
 	public FrameTree getMainFrame() { return mainFrame; }
 
 	public MenuBarTree getMainMenuBar() { return mainMenuBar; }
 	
- 
-	
-	
-	
-
 }
