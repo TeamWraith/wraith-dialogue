@@ -20,6 +20,7 @@ public class Formatter {
 		File file = new File(fileName +".wd");
 		speechContent = new ArrayList<String>();
 		
+		addPlayerLine();
 		addActor();
 		addSpeech();
 		addReturn();
@@ -27,6 +28,20 @@ public class Formatter {
 			speechContent.toArray(new String[speechContent.size()]), file
 		);
 		speechContent = null;
+	}
+
+	private void addPlayerLine() {
+		String line = null;
+		if (guiListener.getGUI().getMainFrame().currentNode().isRoot()) {
+			line = "START";
+		}
+		else {
+			line = "\t[" + guiListener.getGUI().getMainFrame().currentNode().getLevel() + " - " +  
+			guiListener.getGUI().getMainFrame().currentNode().getSiblingCount() + "] " + 
+			guiListener.getGUI().getMainFrame().currentNode().getParent().toString()  + " {\r\n";	//TODO make it right via using scenename later.
+		}
+		
+		speechContent.add(line);
 	}
 
 	private void addActor() {
@@ -55,10 +70,10 @@ public class Formatter {
 	private void addReturn() {
 		String line = null;
 		if (guiListener.getGUI().getMainFrame().currentNode().isLeaf()){
-			line = "RETURN [" + guiListener.getGUI().getMainFrame().currentNode().getLevel() + "]";
+			line = "RETURN [" + (guiListener.getGUI().getMainFrame().currentNode().getLevel()-1) + "]";
 		}
 		else {
-			line = "RETURN [" + (guiListener.getGUI().getMainFrame().currentNode().getLevel()+1) + "]"; //TODO make it set the right returnValue
+			line = "RETURN [" + (guiListener.getGUI().getMainFrame().currentNode()) + "]\r\n}"; //TODO make it set the right returnValue
 		}
 		speechContent.add(line);
 	}

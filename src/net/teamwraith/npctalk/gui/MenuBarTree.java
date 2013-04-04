@@ -12,6 +12,9 @@ public class MenuBarTree extends JMenuBar {
 	// File menu
 	private JMenuItem newDialogue =  new JMenuItem("New dialogue"); 
 	private JMenuItem newNode = new JMenuItem("New Node");
+	
+	private JMenuItem refresh =  new JMenuItem("Refresh");
+	
 	private JMenuItem exit =  new JMenuItem("Exit"); 
 	
 	// Help menu
@@ -24,6 +27,7 @@ public class MenuBarTree extends JMenuBar {
 		add(file);
 		file.add(newDialogue);
 		file.add(newNode);
+		file.add(refresh);
 		file.add(exit);
 		add(help);
 		help.add(about);
@@ -32,6 +36,8 @@ public class MenuBarTree extends JMenuBar {
 	public JMenuItem getNewDialogue() { return newDialogue; }
 
 	public JMenuItem getNewNode() { return newNode; }
+	
+	public JMenuItem getRefresh() { return refresh; }
 	
 	public JMenuItem getExit() { return exit; }
 	

@@ -35,7 +35,7 @@ public class FrameTree extends JFrame {
 
 	private JPanel contentPane;
 	
-	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("ROOT");
+	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
 	private TreeModel treeModel = new DefaultTreeModel(rootNode);
 	
 	private JTree tree = new JTree(treeModel);
@@ -44,7 +44,8 @@ public class FrameTree extends JFrame {
 	
 	private int newNodeSuffix = 1;
 	
-	
+	private int scene;
+	private int choiseNr;
 	
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
@@ -111,6 +112,7 @@ public class FrameTree extends JFrame {
 	public void newTree() {
 		clearAll();
 		setRoot("New Node" + newNodeSuffix++);
+		
 		tree.setModel(new DefaultTreeModel(
 				new DefaultMutableTreeNode(rootNode)));
 		tree.setSelectionInterval(0, 0);
@@ -118,6 +120,7 @@ public class FrameTree extends JFrame {
 	
 	public void addNode() {
 		DefaultMutableTreeNode child = new DefaultMutableTreeNode("New Node" + newNodeSuffix++);
+		scene();
 		currentNode().add(child);
 		tree.updateUI();
 		tree.setSelectionPath(tree.getSelectionPath().pathByAddingChild(child));
@@ -140,4 +143,14 @@ public class FrameTree extends JFrame {
 			index = (DefaultMutableTreeNode) indexPath.getLastPathComponent();
 		return index;
 	}
+	
+	private int scene() {
+		int scenesAdded = 0;
+		System.out.println(tree.getModel());
+	
+		
+		return scene;
+		
+	}
+
 }

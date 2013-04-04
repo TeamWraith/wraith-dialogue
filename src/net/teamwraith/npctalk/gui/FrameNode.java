@@ -31,13 +31,13 @@ public class FrameNode extends JFrame {
 	//speechPanel - textArea
 		private JTextArea speechField;
 		
-		
 	//save node button
 		private JButton saveButton;
 
 	//name of the node that is beeing edited
 		private String nodeName;
 		
+
 		
 	//Used for getting a proper position within the screen.
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -94,7 +94,7 @@ public class FrameNode extends JFrame {
 			infoPanel.add(actorField, BorderLayout.NORTH);
 			
 			infoPanel.add(sceneLab, BorderLayout.NORTH);
-			
+		
 		//Adds textArea to speechPanel
 			speechPanel.setViewportView(getSpeechField());
 			
