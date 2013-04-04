@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Files {
-	
+	 
 	/**
 	 * Calls {@link #writeRawFile(String[], File)}
 	 * but with a string as the filename (.txt 
@@ -36,6 +36,7 @@ public class Files {
 			for(int i = 0; i < lines.length; i++) {
 				writer.append(lines[i]);
 				writer.newLine();
+				
 			}
 		
 			System.out.println("wrote in file: " + file.getAbsolutePath());

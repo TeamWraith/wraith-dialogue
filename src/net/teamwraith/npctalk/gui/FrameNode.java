@@ -48,12 +48,12 @@ public class FrameNode extends JFrame {
 		setMinimumSize(new Dimension(640, 120));
 		
 		//infoPanel - content
-			branchCheck = new JCheckBox("is brancher");
+			branchCheck = new JCheckBox("is end");
 			
 			parentLab = new JLabel("Parent: ");
 			parentField = new JTextField("ParentSpeech", 15);
 			
-			actorLab = new JLabel("Actor: ");
+			actorLab = new JLabel("Actors: ");
 			actorField = new JTextField("Actor", 15);
 			
 			sceneLab = new JLabel("Scene: " + "derp.01"); //Later, have parameters or a method giving in the scenenumber

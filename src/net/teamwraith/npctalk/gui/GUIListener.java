@@ -47,10 +47,11 @@ public class GUIListener {
 			}
 		}); 
 	*/
+
 	
 		gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gui.buildNodeFrame(getGUIListener());
+				gui.getMainFrame().newTree();
 			}
 		});
 	}
