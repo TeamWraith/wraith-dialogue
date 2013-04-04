@@ -1,14 +1,22 @@
 package net.teamwraith.npctalk.gui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import net.teamwraith.npctalk.Files;
 
@@ -26,42 +34,97 @@ public class GUIListener {
 	private String speech;
 	private GUIBuild gui;
 	
+	
 	public GUIListener() {
 		gui = new GUIBuild();
-
-	/**	
-		gui.getTree().addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent e) {
-		        DefaultMutableTreeNode node = (DefaultMutableTreeNode) 
-		        	gui.getTree().getLastSelectedPathComponent();
-
-		        // if nothing is selected
-		        if (node == null) return;
-
-		        // retrieve the node that was selected 
-				Object nodeInfo = node.getUserObject();
-		        // React to the node selection.
-		        System.out.println("Changed index to: " + nodeInfo);
-		        gui.buildNodeFrame();
-		        nodeFrameListeners();
-			}
-		}); 
-	*/
-
 	
-		gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+	/**
+	 * Listeners for the TreeFrame content.
+	 */
+/**
+ * Comented out because of lack of usage, but, as doubleclick-listeners might be useful, we'll keep it for a while. 
+ * 
+ * 	gui.getMainFrame().getTree().addMouseListener(new MouseAdapter(){
+		public void mouseClicked(MouseEvent evt) {
+			JTree tree = (JTree)evt.getSource();
+			if (evt.getClickCount() == 2) {
+
+				// React to the node selection.
+				gui.buildNodeFrame(gui.getMainFrame().currentNode().toString(),getGUIListener());
+				}
+			}
+        }); 
+**/
+	gui.getMainFrame().getTree().addKeyListener(new KeyAdapter() {
+		public void keyPressed(KeyEvent e) {
+			// React to the node selection.
+			gui.buildNodeFrame(gui.getMainFrame().currentNode().toString(),getGUIListener());
+		}
+	});
+	
+	
+	/**
+	 * Shortcut for creating a new dialogue, TODO Have a look into KeyEventDispatchers & KeyboardFocusManager.
+	 */
+	gui.getMainFrame().addKeyListener(new KeyAdapter() {
+		public void keyPressed(KeyEvent e) {
+			gui.getMainFrame().setFocusable(true);
+			if (e.getKeyCode() == KeyEvent.VK_T && e.isControlDown()) {
 				gui.getMainFrame().newTree();
+				enableTreeStuff();
+			}
+		}
+	});
+	
+	
+	/**
+	 * Listeners for the enabled-by-default items in the MenuBar for TreeFrame.
+	 */
+	gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			gui.getMainFrame().newTree();
+			enableTreeStuff();
 			}
 		});
-	}
 	
-	public void enableNodeFrameListeners(){
+	gui.getMainMenuBar().getExit().addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			gui.getMainFrame().dispose();
+			}
+		});
+	
+	}
+
+	/**
+	 * Listeners for the greyed-out items for TreeFrame.
+	 */
+	public void enableTreeStuff() {
+		
+		gui.getMainMenuBar().getNewNode().setEnabled(true);
+		gui.getMainFrame().getNewNodeBtn().setEnabled(true);
+		
+		gui.getMainMenuBar().getNewNode().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gui.getMainFrame().addNode();
+				}
+			});
+		
+		gui.getMainFrame().getNewNodeBtn().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gui.getMainFrame().addNode();
+				}
+			});
+	}
+	/**
+	 * Listeners for the content in NodeFrames.
+	 */
+	public void enableNodeFrameListeners() {
+		
 		gui.getNodeFrame().getSpeechField().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
 					setSpeech(gui.getNodeFrame().getSpeechField().getText());
-					runLines(new File("TEST01.txt"));
+					runLines(new File(gui.getNodeFrame().getNodeName()+".wd"));
 					System.out.println(speech);
 					gui.getNodeFrame().dispose();
 				}
@@ -70,8 +133,9 @@ public class GUIListener {
 		
 		gui.getNodeFrame().getSaveButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				setSpeech(gui.getNodeFrame().getSpeechField().getText());
-				runLines(new File("TEST01.txt"));
+				runLines(new File(gui.getNodeFrame().getNodeName()+".wd"));
 				System.out.println(speech);
 				gui.getNodeFrame().dispose();
 			}

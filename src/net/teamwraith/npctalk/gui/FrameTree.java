@@ -67,18 +67,8 @@ public class FrameTree extends JFrame {
 		nodeList = new ArrayList<DefaultMutableTreeNode>();
 		
 		newNodeBtn = new JButton("New Node");
-		
-		newNodeBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-		//TODO Stuff
-				
-				addNode("New Node " + newNodeSuffix++);
-			}
-		});
-		
-		/**
-		 * Simple test with nodes. TODO make nodes dynamic.
-		 */
+		newNodeBtn.setEnabled(false);
+
 		tree.setModel(treeModel);
 			
 		tree.setEditable(true); // Possibly we could make the edited object in the tree update from this, as well as the node editor frame.
@@ -123,22 +113,32 @@ public class FrameTree extends JFrame {
 		setRoot("New Node" + newNodeSuffix++);
 		tree.setModel(new DefaultTreeModel(
 				new DefaultMutableTreeNode(rootNode)));
-
+		tree.setSelectionInterval(0, 0);
 	}
 	
-	public void addNode(Object newNode) {
+	public void addNode() {
+		DefaultMutableTreeNode child = new DefaultMutableTreeNode("New Node" + newNodeSuffix++);
+		currentNode().add(child);
+		tree.updateUI();
+		tree.setSelectionPath(tree.getSelectionPath().pathByAddingChild(child));
+	}
+
+	public JTree getTree() {
+		return tree;
+	}
+	
+	public JButton getNewNodeBtn() {
+		return newNodeBtn;
+	}
+
+	public DefaultMutableTreeNode currentNode() {
 		DefaultMutableTreeNode index = null;
-		DefaultMutableTreeNode child = new DefaultMutableTreeNode(newNode);
 		TreePath indexPath = tree.getSelectionPath();
-		
 		if (indexPath == null)
 			index = rootNode;
 		else
 			index = (DefaultMutableTreeNode) indexPath.getLastPathComponent();
-		
-		index.add(child);
-		tree.setSelectionPath(indexPath.pathByAddingChild(child));
+		return index;
 	}
-
 	
 }

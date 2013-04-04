@@ -34,15 +34,18 @@ public class FrameNode extends JFrame {
 		
 	//save node button
 		private JButton saveButton;
-	
+
+		//name of the node that is beeing edited
+		private String nodeName;
+		
 	//Used for getting a proper position within the screen.
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
 	final int displayHeight = gd.getDisplayMode().getHeight();
 
-	public FrameNode() {
-		
-		setTitle("Node Edit");
+	public FrameNode(String indexName) {
+		nodeName = indexName;
+		setTitle("Node Edit - "+nodeName);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 640, 360);
 		setMinimumSize(new Dimension(640, 120));
@@ -91,6 +94,10 @@ public class FrameNode extends JFrame {
 
 	public JButton getSaveButton(){
 		return saveButton;
+	}
+	
+	public String getNodeName() {
+		return nodeName;
 	}
 
 

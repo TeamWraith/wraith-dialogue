@@ -15,13 +15,13 @@ public class GUIBuild {
 	public GUIBuild(){
 		
 		mainFrame = new FrameTree();
-
 		mainFrame.setJMenuBar(mainMenuBar);
 
 	}
 	
-	public void buildNodeFrame(GUIListener guiListener) {
-		nodeFrame = new FrameNode();
+	public void buildNodeFrame(String indexName,GUIListener guiListener) {
+		nodeFrame = new FrameNode(indexName);
+		
 		guiListener.enableNodeFrameListeners();
 	}
 
