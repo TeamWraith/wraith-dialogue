@@ -32,74 +32,59 @@ public class GUIListener {
 	public GUIListener() {
 		gui = new GUIBuild();
 		formatter = new Formatter(this);
-	/**
-	 * Listeners for the TreeFrame content.
-	 */
-/**
- * Comented out because of lack of usage, but, as doubleclick-listeners might be useful, we'll keep it for a while. 
- * 
- * 	gui.getMainFrame().getTree().addMouseListener(new MouseAdapter(){
-		public void mouseClicked(MouseEvent evt) {
-			JTree tree = (JTree)evt.getSource();
-			if (evt.getClickCount() == 2) {
-
-				// React to the node selection.
-				gui.buildNodeFrame(gui.getMainFrame().currentNode().toString(),getGUIListener());
+		
+		gui.getMainFrame().getTree().addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				// React ENTER when it's pressed and an item is selected in the tree.
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					String name = gui.getMainFrame().currentNode().toString();
+					boolean isEnd = false;
+					String parent;
+					if (gui.getMainFrame().currentNode().isRoot())
+						parent = gui.getMainFrame().currentNode().toString();
+					else
+						parent = gui.getMainFrame().currentNode().getParent().toString();
+					String[] actors = null;
+					int sceneRow = gui.getMainFrame().currentNode().getLevel();				//TODO Make accurate in case of several on the same level
+					int sceneNr = gui.getMainFrame().currentNode().getSiblingCount();		//TODO Make each node have separate number instead of the total count of siblings
+					String speech = null;
+					gui.buildNodeFrame(name, isEnd, parent, actors, sceneRow, sceneNr, speech, getGUIListener());
 				}
 			}
-        }); 
-**/
-	gui.getMainFrame().getTree().addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent e) {
-			// React ENTER when it's pressed and an item is selected in the tree.
-			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				String name = gui.getMainFrame().currentNode().toString();
-				boolean isEnd = false;
-				String parent;
-				if (gui.getMainFrame().currentNode().isRoot())
-					parent = gui.getMainFrame().currentNode().toString();
-				else
-					parent = gui.getMainFrame().currentNode().getParent().toString();
-				String[] actors = null;
-				int sceneRow = gui.getMainFrame().currentNode().getLevel();				//TODO Make accurate in case of several on the same level
-				int sceneNr = gui.getMainFrame().currentNode().getSiblingCount();		//TODO Make each node have separate number instead of the total count of siblings
-				String speech = null;
-				gui.buildNodeFrame(name, isEnd, parent, actors, sceneRow, sceneNr, speech, getGUIListener());
+		});
+	
+	
+		/**
+		 * Shortcut for creating a new dialogue, TODO Have a look into KeyEventDispatchers & KeyboardFocusManager.
+		 */
+		gui.getMainFrame().addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				gui.getMainFrame().setFocusable(true);
+				if (e.getKeyCode() == KeyEvent.VK_T && e.isControlDown()) {
+					gui.getMainFrame().newTree();
+					enableTreeStuff();
+				}
 			}
-		}
-	});
-	
-	
-	/**
-	 * Shortcut for creating a new dialogue, TODO Have a look into KeyEventDispatchers & KeyboardFocusManager.
-	 */
-	gui.getMainFrame().addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent e) {
-			gui.getMainFrame().setFocusable(true);
-			if (e.getKeyCode() == KeyEvent.VK_T && e.isControlDown()) {
+		});
+		
+		
+		/**
+		 * Listeners for the enabled-by-default items in the MenuBar for TreeFrame.
+		 */
+		gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				gui.getMainFrame().newTree();
 				enableTreeStuff();
+				}
 			}
-		}
-	});
-	
-	
-	/**
-	 * Listeners for the enabled-by-default items in the MenuBar for TreeFrame.
-	 */
-	gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			gui.getMainFrame().newTree();
-			enableTreeStuff();
+		);
+		
+		gui.getMainMenuBar().getExit().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gui.getMainFrame().dispose();
+				}
 			}
-		});
-	
-	gui.getMainMenuBar().getExit().addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			gui.getMainFrame().dispose();
-			}
-		});
-	
+		);
 	}
 
 	/**

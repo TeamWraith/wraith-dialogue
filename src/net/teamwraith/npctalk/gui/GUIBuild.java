@@ -1,6 +1,5 @@
 package net.teamwraith.npctalk.gui;
 
-
 /**
  * Builds the GUI.
  */
