@@ -35,36 +35,49 @@ public class FrameNode extends JFrame {
 	//save node button
 		private JButton saveButton;
 
-		//name of the node that is beeing edited
+	//name of the node that is beeing edited
 		private String nodeName;
+		
 		
 	//Used for getting a proper position within the screen.
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
 	final int displayHeight = gd.getDisplayMode().getHeight();
 
-	public FrameNode(String indexName) {
-		nodeName = indexName;
+	public FrameNode(String name){
+		loadNode(name, false, null, null, 1, 1, null);
+	}
+	
+	public FrameNode(String name, boolean isEnd, String parent, String[] actors,int sceneRow,int sceneNr, String speech) {
+		loadNode(name, isEnd, parent, actors, sceneRow, sceneNr, speech);
+	}
+	
+	public void loadNode(String name, boolean isEnd, String parent, String[] actors,int sceneRow,int sceneNr, String speech){
+		
+		nodeName = name;
 		setTitle("Node Edit - "+nodeName);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 640, 360);
 		setMinimumSize(new Dimension(640, 120));
 		
 		//infoPanel - content
-			branchCheck = new JCheckBox("is end");
+			branchCheck = new JCheckBox("is end", isEnd);
 			
 			parentLab = new JLabel("Parent: ");
-			parentField = new JTextField("ParentSpeech", 15);
+			parentField = new JTextField(parent, 15);
+			parentField.setEditable(false);
 			
 			actorLab = new JLabel("Actors: ");
-			actorField = new JTextField("Actor", 15);
 			
-			sceneLab = new JLabel("Scene: " + "derp.01"); //Later, have parameters or a method giving in the scenenumber
+			if (actors == null) {actorField = new JTextField(15);}
+			else {actorField = new JTextField(actors.toString(), 15);} //TODO separate actors with commas.
+			
+			sceneLab = new JLabel("Scene: " + sceneRow +" - "+ sceneNr); //Later, have parameters or a method giving in the scenenumber
 			
 			saveButton = new JButton("Save Node");
 		
 		//speechPanel - textArea
-			speechField = new JTextArea();
+			speechField = new JTextArea(speech);
 			
 		//Adds panels to node nodeFrame
 			add(infoPanel, BorderLayout.PAGE_START);
@@ -88,6 +101,10 @@ public class FrameNode extends JFrame {
 			setVisible(true);	
 	}
 
+	public JTextField getActorField() {
+		return actorField;
+	}
+
 	public JTextArea getSpeechField() {
 		return speechField;
 	}
@@ -99,6 +116,6 @@ public class FrameNode extends JFrame {
 	public String getNodeName() {
 		return nodeName;
 	}
-
+	
 
 }

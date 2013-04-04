@@ -140,5 +140,4 @@ public class FrameTree extends JFrame {
 			index = (DefaultMutableTreeNode) indexPath.getLastPathComponent();
 		return index;
 	}
-	
 }

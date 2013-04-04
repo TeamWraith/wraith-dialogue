@@ -1,24 +1,17 @@
 package net.teamwraith.npctalk.gui;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import net.teamwraith.npctalk.Files;
+import net.teamwraith.npctalk.Formatter;
 
 /**
  * This is what <i>interacts</i> with the GUI;
@@ -33,11 +26,12 @@ public class GUIListener {
 	
 	private String speech;
 	private GUIBuild gui;
+	private Formatter formatter;
 	
 	
 	public GUIListener() {
 		gui = new GUIBuild();
-	
+		formatter = new Formatter(this);
 	/**
 	 * Listeners for the TreeFrame content.
 	 */
@@ -57,8 +51,21 @@ public class GUIListener {
 **/
 	gui.getMainFrame().getTree().addKeyListener(new KeyAdapter() {
 		public void keyPressed(KeyEvent e) {
-			// React to the node selection.
-			gui.buildNodeFrame(gui.getMainFrame().currentNode().toString(),getGUIListener());
+			// React ENTER when it's pressed and an item is selected in the tree.
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				String name = gui.getMainFrame().currentNode().toString();
+				boolean isEnd = false;
+				String parent;
+				if (gui.getMainFrame().currentNode().isRoot())
+					parent = gui.getMainFrame().currentNode().toString();
+				else
+					parent = gui.getMainFrame().currentNode().getParent().toString();
+				String[] actors = null;
+				int sceneRow = gui.getMainFrame().currentNode().getLevel();				//TODO Make accurate in case of several on the same level
+				int sceneNr = gui.getMainFrame().currentNode().getSiblingCount();		//TODO Make each node have separate number instead of the total count of siblings
+				String speech = null;
+				gui.buildNodeFrame(name, isEnd, parent, actors, sceneRow, sceneNr, speech, getGUIListener());
+			}
 		}
 	});
 	
@@ -124,7 +131,7 @@ public class GUIListener {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
 					setSpeech(gui.getNodeFrame().getSpeechField().getText());
-					runLines(new File(gui.getNodeFrame().getNodeName()+".wd"));
+					formatter.runLines(gui.getNodeFrame().getNodeName());
 					System.out.println(speech);
 					gui.getNodeFrame().dispose();
 				}
@@ -135,7 +142,7 @@ public class GUIListener {
 			public void actionPerformed(ActionEvent e) {
 				
 				setSpeech(gui.getNodeFrame().getSpeechField().getText());
-				runLines(new File(gui.getNodeFrame().getNodeName()+".wd"));
+				formatter.runLines(gui.getNodeFrame().getNodeName());
 				System.out.println(speech);
 				gui.getNodeFrame().dispose();
 			}
@@ -151,24 +158,7 @@ public class GUIListener {
 		return speech;
 	}
 	
-	public void runLines(File file) {
-		List<String> speechContent = new ArrayList<String>(); 
-		String line = null;
-		
-		for (int i = 0; i < gui.getNodeFrame().getSpeechField().getLineCount(); i++) {
-			try {
-				int start = gui.getNodeFrame().getSpeechField().getLineStartOffset(i);
-				int end = gui.getNodeFrame().getSpeechField().getLineEndOffset(i);
-				line = getSpeech().substring(start, end);
-				speechContent.add(line);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Files.writeRawFile(
-			speechContent.toArray(new String[speechContent.size()]), file
-		);
-	}
 	public GUIListener getGUIListener() { return this; }
+
+	public GUIBuild getGUI() { return gui; }
 }

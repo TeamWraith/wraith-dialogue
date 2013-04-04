@@ -19,9 +19,13 @@ public class GUIBuild {
 
 	}
 	
-	public void buildNodeFrame(String indexName,GUIListener guiListener) {
-		nodeFrame = new FrameNode(indexName);
-		
+	public void buildNodeFrame(String name, boolean isEnd, String parent, String[] actors,int sceneRow,int sceneNr, String speech, GUIListener guiListener) {
+		nodeFrame = new FrameNode(name, isEnd, parent, actors, sceneRow, sceneNr, speech);
+		guiListener.enableNodeFrameListeners();
+	}
+	
+	public void buildNodeFrame(String name, GUIListener guiListener) {
+		nodeFrame = new FrameNode(name);
 		guiListener.enableNodeFrameListeners();
 	}
 
