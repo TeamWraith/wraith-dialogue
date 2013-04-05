@@ -50,6 +50,9 @@ public class GUIListener {
 					String speech = null;
 					gui.buildNodeFrame(name, isEnd, parent, actors, sceneRow, sceneNr, speech, getGUIListener());
 				}
+				else if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) {
+					gui.getMainFrame().addNode();
+				}
 			}
 		});
 	

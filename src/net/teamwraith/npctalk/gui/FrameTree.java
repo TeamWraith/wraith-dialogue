@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -35,17 +34,15 @@ public class FrameTree extends JFrame {
 
 	private JPanel contentPane;
 	
-	private DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode();
-	private TreeModel treeModel = new DefaultTreeModel(rootNode);
+	private SpeechNode rootNode = new SpeechNode(0);
+	private TreeModel treeModel;
 	
 	private JTree tree = new JTree(treeModel);
-	private List<DefaultMutableTreeNode> nodeList;
 	private JButton newNodeBtn;
 	
 	private int newNodeSuffix = 1;
+
 	
-	private int scene;
-	private int choiseNr;
 	
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
@@ -65,8 +62,6 @@ public class FrameTree extends JFrame {
 		
 		tree = new JTree();
 		
-		nodeList = new ArrayList<DefaultMutableTreeNode>();
-		
 		newNodeBtn = new JButton("New Node");
 		newNodeBtn.setEnabled(false);
 
@@ -85,20 +80,20 @@ public class FrameTree extends JFrame {
 	/**
 	 * For modifying the root nodes name.
 	 */
-	public void setRoot(DefaultMutableTreeNode rootNode) {
+	public void setRoot(SpeechNode rootNode) {
 		this.rootNode = rootNode;
 		tree.setVisible(true);
 	}
 	
 	public void setRoot(String rootNode) {
-		this.rootNode = new DefaultMutableTreeNode(rootNode);
+		this.rootNode = new SpeechNode(0, rootNode);
 		tree.setVisible(true);
 	}
 	
 
 	
 	/**
-	 *  Methods for clearing the tree, evantually also to start a new one.
+	 *  Methods for clearing the tree.
 	 */
 	public void clearNodes() {
 	    rootNode.removeAllChildren();
@@ -110,20 +105,23 @@ public class FrameTree extends JFrame {
 	}
 
 	public void newTree() {
+		newNodeSuffix = 1;
 		clearAll();
 		setRoot("New Node" + newNodeSuffix++);
-		
-		tree.setModel(new DefaultTreeModel(
-				new DefaultMutableTreeNode(rootNode)));
-		tree.setSelectionInterval(0, 0);
+		tree.setModel(new DefaultTreeModel(rootNode));
+		tree.setSelectionRow(0);
 	}
 	
 	public void addNode() {
-		DefaultMutableTreeNode child = new DefaultMutableTreeNode("New Node" + newNodeSuffix++);
-		scene();
+		SpeechNode child = new SpeechNode(currentChoice(), "New Node" + newNodeSuffix++);
 		currentNode().add(child);
 		tree.updateUI();
-		tree.setSelectionPath(tree.getSelectionPath().pathByAddingChild(child));
+		tree.expandRow(tree.getMinSelectionRow());
+		
+	}
+
+	public SpeechNode getRootNode() {
+		return rootNode;
 	}
 
 	public JTree getTree() {
@@ -134,23 +132,35 @@ public class FrameTree extends JFrame {
 		return newNodeBtn;
 	}
 
-	public DefaultMutableTreeNode currentNode() {
-		DefaultMutableTreeNode index = null;
+	public SpeechNode currentNode() {
+		SpeechNode index = null;
 		TreePath indexPath = tree.getSelectionPath();
 		if (indexPath == null)
 			index = rootNode;
 		else
-			index = (DefaultMutableTreeNode) indexPath.getLastPathComponent();
+			index = (SpeechNode) indexPath.getLastPathComponent();
+		
+
+		System.out.println("root is: "+rootNode +"\r\nCurrent count: "+ (getNodeCount()));
 		return index;
 	}
 	
-	private int scene() {
-		int scenesAdded = 0;
-		System.out.println(tree.getModel());
-	
-		
-		return scene;
-		
+	public int getNodeCount() {
+		return getNodeCount(tree.getModel(), tree.getModel().getRoot(), 1);
 	}
-
+	
+	public int getNodeCount(TreeModel model, Object object, int count) {
+		int nodeCount = count;
+		for (int i = 0; i < model.getChildCount(object); i++) {
+			nodeCount += getNodeCount(model, model.getChild(object, i),count);
+		}
+		return nodeCount;
+	}
+	
+	private int currentChoice() {
+		int i = getNodeCount()-
+				getRootNode().getLeafCount(); //Move over to 
+		return i;
+	}
 }
+	

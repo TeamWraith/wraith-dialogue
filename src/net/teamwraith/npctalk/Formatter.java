@@ -7,10 +7,12 @@ import java.util.List;
 import javax.swing.text.BadLocationException;
 
 import net.teamwraith.npctalk.gui.GUIListener;
+import net.teamwraith.npctalk.gui.SpeechNode;
 
 public class Formatter {
 	private GUIListener guiListener;
 	private List<String> speechContent; 
+
 	
 	public Formatter(GUIListener guiListener) {
 		this.guiListener = guiListener;
@@ -21,9 +23,10 @@ public class Formatter {
 		speechContent = new ArrayList<String>();
 		
 		addPlayerLine();
-		if (isSpeechEmpty())
-		addActor();
-		addSpeech();
+		if (!isSpeechEmpty()) {
+			addActor();
+			addSpeech();
+		}
 		addReturn();
 		Files.writeRawFile(
 			speechContent.toArray(new String[speechContent.size()]), file
@@ -32,14 +35,14 @@ public class Formatter {
 	}
 
 	private void addPlayerLine() {
+		SpeechNode currentNode = guiListener.getGUI().getMainFrame().currentNode();
 		String line = null;
-		if (guiListener.getGUI().getMainFrame().currentNode().isRoot()) {
-			line = "Dialogue: " + guiListener.getGUI().getMainFrame().currentNode().toString()+"\r\n";
+		if (currentNode.isRoot()) {
+			line = "Dialogue: " + currentNode.toString()+"\r\n";
 		}
 		else {
-			line = "\t[" + guiListener.getGUI().getMainFrame().currentNode().getLevel() + " - " +  
-			guiListener.getGUI().getMainFrame().currentNode().getSiblingCount() + "] " + 
-			guiListener.getGUI().getMainFrame().currentNode().getParent().toString()  + " {\r\n";	//TODO make it right via using scenename later.
+			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + currentRespond() + "] " + 
+			currentNode.getParent().toString()  + " {\r\n";	//TODO make it right via using scenename later.
 		}
 		
 		speechContent.add(line);
@@ -69,12 +72,13 @@ public class Formatter {
 	}
 	
 	private void addReturn() {
+		SpeechNode currentNode = guiListener.getGUI().getMainFrame().currentNode();
 		String line = null;
-		if (guiListener.getGUI().getMainFrame().currentNode().isLeaf()){
-			line = "RETURN [" + (guiListener.getGUI().getMainFrame().currentNode().getLevel()-1) + "]";
+		if (currentNode.isLeaf()){
+			line = "RETURN [" + (currentNode.getLevel()+1) + "]";
 		}
 		else {
-			line = "RETURN [" + (guiListener.getGUI().getMainFrame().currentNode()) + "]\r\n}"; //TODO make it set the right returnValue
+			line = "RETURN [" + (currentNode.getLevel()) + "]\r\n}"; //TODO make it set the right returnValue
 		}
 		speechContent.add(line);
 	}
@@ -85,4 +89,12 @@ public class Formatter {
 		else 
 			return false;
 	}
+	
+	private int currentRespond() {
+		SpeechNode currentNode = guiListener.getGUI().getMainFrame().currentNode();
+		int i;
+		i = currentNode.getParent().getIndex(currentNode) + 1;
+		return i;
+	}
+	
 }
