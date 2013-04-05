@@ -1,0 +1,6 @@
+START
+	DERP:
+		Hello I'm Derp
+
+			How are you?
+RETURN [-1]

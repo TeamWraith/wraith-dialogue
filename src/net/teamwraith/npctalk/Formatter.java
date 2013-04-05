@@ -21,6 +21,7 @@ public class Formatter {
 		speechContent = new ArrayList<String>();
 		
 		addPlayerLine();
+		if (isSpeechEmpty())
 		addActor();
 		addSpeech();
 		addReturn();
@@ -33,7 +34,7 @@ public class Formatter {
 	private void addPlayerLine() {
 		String line = null;
 		if (guiListener.getGUI().getMainFrame().currentNode().isRoot()) {
-			line = "START";
+			line = "Dialogue: " + guiListener.getGUI().getMainFrame().currentNode().toString()+"\r\n";
 		}
 		else {
 			line = "\t[" + guiListener.getGUI().getMainFrame().currentNode().getLevel() + " - " +  
@@ -76,5 +77,12 @@ public class Formatter {
 			line = "RETURN [" + (guiListener.getGUI().getMainFrame().currentNode()) + "]\r\n}"; //TODO make it set the right returnValue
 		}
 		speechContent.add(line);
+	}
+	
+	private boolean isSpeechEmpty() {
+		if (guiListener.getGUI().getNodeFrame().getSpeechField().getText().isEmpty())
+			return true;
+		else 
+			return false;
 	}
 }

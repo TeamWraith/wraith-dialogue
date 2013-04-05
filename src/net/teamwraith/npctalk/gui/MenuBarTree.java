@@ -8,7 +8,7 @@ public class MenuBarTree extends JMenuBar {
 	
 	private JMenu file = new JMenu("File");
 	private JMenu help = new JMenu("Help");
-	
+
 	// File menu
 	private JMenuItem newDialogue =  new JMenuItem("New dialogue"); 
 	private JMenuItem newNode = new JMenuItem("New Node");
