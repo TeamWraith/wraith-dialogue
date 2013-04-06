@@ -28,7 +28,6 @@ public class GUIListener {
 	private GUIBuild gui;
 	private Formatter formatter;
 	
-	
 	public GUIListener() {
 		gui = new GUIBuild();
 		formatter = new Formatter(getGUIListener());
@@ -45,8 +44,8 @@ public class GUIListener {
 					else
 						parent = gui.getMainFrame().getCurrentNode().getParent().toString();
 					String[] actors = null;
-					int sceneRow = gui.getMainFrame().getCurrentNode().getLevel();				//TODO Make accurate in case of several on the same level
-					int sceneNr = gui.getMainFrame().getCurrentNode().getSiblingCount();		//TODO Make each node have separate number instead of the total count of siblings
+					int sceneRow = gui.getMainFrame().getCurrentNode().getLevel();				
+					int sceneNr = gui.getMainFrame().getCurrentNode().getSiblingCount();	
 					String speech = null;
 					gui.buildNodeFrame(getGUIListener());
 				}
@@ -65,11 +64,10 @@ public class GUIListener {
 				gui.getMainFrame().setFocusable(true);
 				if (e.getKeyCode() == KeyEvent.VK_T && e.isControlDown()) {
 					gui.getMainFrame().newTree();
-					enableTreeStuff();
+					enableTreeListeners();
 				}
 			}
 		});
-		
 		
 		/**
 		 * Listeners for the enabled-by-default items in the MenuBar for TreeFrame.
@@ -77,44 +75,47 @@ public class GUIListener {
 		gui.getMainMenuBar().getNewDialogue().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gui.getMainFrame().newTree();
-				enableTreeStuff();
-				}
+				enableTreeListeners();
 			}
-		);
+		});
 		
 		gui.getMainMenuBar().getExit().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gui.getMainFrame().dispose();
-				}
 			}
-		);
+		});
+		
+		gui.getMainMenuBar().getAbout().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new FrameAbout();
+			}
+		});
 	}
 
 	/**
-	 * Listeners for the greyed-out items for TreeFrame.
+	 * Listeners for the disabled items in the TreeFrame.
 	 */
-	public void enableTreeStuff() {
-		
+	public void enableTreeListeners() {
 		gui.getMainMenuBar().getNewNode().setEnabled(true);
 		gui.getMainFrame().getNewNodeBtn().setEnabled(true);
 		
 		gui.getMainMenuBar().getNewNode().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gui.getMainFrame().addNode();
-				}
-			});
+			}
+		});
 		
 		gui.getMainFrame().getNewNodeBtn().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gui.getMainFrame().addNode();
-				}
-			});
+			}
+		});
 	}
+	
 	/**
 	 * Listeners for the content in NodeFrames.
 	 */
 	public void enableNodeFrameListeners() {
-		
 		gui.getNodeFrame().getSpeechField().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
@@ -128,7 +129,6 @@ public class GUIListener {
 		
 		gui.getNodeFrame().getSaveButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				setSpeech(gui.getNodeFrame().getSpeechField().getText());
 				formatter.runLines(gui.getNodeFrame().getNodeName());
 				System.out.println(speech);

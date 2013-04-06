@@ -1,17 +1,20 @@
 package net.teamwraith.npctalk.gui;
 
+import java.awt.Color;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
+@SuppressWarnings("serial")
 public class MenuBarTree extends JMenuBar {
 	
 	private JMenu file = new JMenu("File");
 	private JMenu help = new JMenu("Help");
-
 	
 	// File menu
-	private JMenuItem newDialogue =  new JMenuItem("New dialogue"); 
+	private JMenuItem newDialogue =  new JMenuItem("New Dialogue"); 
 	private JMenuItem newNode = new JMenuItem("New Node");
 	
 	private JMenuItem refresh =  new JMenuItem("Refresh");
@@ -20,7 +23,7 @@ public class MenuBarTree extends JMenuBar {
 	private JMenuItem exit =  new JMenuItem("Exit"); 
 	
 	// Help menu
-	private JMenuItem about = new JMenuItem("About...");
+	private JMenuItem about = new JMenuItem("About WraithDialogue");
 	
 	public MenuBarTree() {
 		
@@ -29,10 +32,10 @@ public class MenuBarTree extends JMenuBar {
 		add(file);
 		file.add(newDialogue);
 		file.add(newNode);
-		file.add(new MenuSplitter());
+		file.add(new MenuSeparator());
 		file.add(refresh);
 		file.add(saveDialogue);
-		file.add(new MenuSplitter());
+		file.add(new MenuSeparator());
 		file.add(exit);
 		add(help);
 		help.add(about);
@@ -48,7 +51,14 @@ public class MenuBarTree extends JMenuBar {
 	
 	public JMenuItem getAbout() { return about; }
 	
-	
+	/* separates menu, duh */
+	public class MenuSeparator extends JSeparator {
+		
+		public MenuSeparator() {
+			setForeground(Color.LIGHT_GRAY);
+		}
+		
+	}
 
 }
 
