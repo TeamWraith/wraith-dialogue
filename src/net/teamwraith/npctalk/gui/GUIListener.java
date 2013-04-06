@@ -121,7 +121,11 @@ public class GUIListener {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
 					setSpeech(gui.getNodeFrame().getSpeechField().getText());
 					formatter.runLines(gui.getNodeFrame().getNodeName());
-					System.out.println(speech);
+					gui.getNodeFrame().getCurrentNode().assignInfo(
+							gui.getNodeFrame().getEndCheck(), //TODO
+							gui.getNodeFrame().getParentField().getText(),
+							gui.getNodeFrame().getActorField().getText(),
+							gui.getNodeFrame().getSpeechField().getText());
 					gui.getNodeFrame().dispose();
 				}
 			}
@@ -131,7 +135,6 @@ public class GUIListener {
 			public void actionPerformed(ActionEvent e) {
 				setSpeech(gui.getNodeFrame().getSpeechField().getText());
 				formatter.runLines(gui.getNodeFrame().getNodeName());
-				System.out.println(speech);
 				gui.getNodeFrame().dispose();
 			}
 		});

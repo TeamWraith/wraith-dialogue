@@ -45,7 +45,12 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		super.remove(aChild);
 	}
 	
-	
+	public void assignInfo(boolean isEnder, String actor, String response, String speech) {
+		setEnd(isEnder);
+		setActor(actor);
+		setResponse(response);
+		setSpeech(speech);
+	}
 	
 	public int getCurrentChoiceNode() {
 		return currentChoiceNode;
@@ -77,4 +82,6 @@ public class SpeechNode extends DefaultMutableTreeNode {
 	public void setSpeech(String speech) {
 		this.speech = speech;
 	}
+	
+
 }

@@ -23,7 +23,7 @@ public class FrameNode extends JFrame {
 	private JScrollPane speechPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
 		
 	//infoPanel - content
-	private JCheckBox branchCheck;
+	private JCheckBox endCheck;
 	private JLabel parentLab;
 	private JLabel actorLab;
 	private JLabel sceneLab;
@@ -75,10 +75,10 @@ public class FrameNode extends JFrame {
 		
 		//infoPanel - content
 		
-			branchCheck = new JCheckBox("is end", isEnd);
+			endCheck = new JCheckBox("is end", isEnd);
 			
 			parentLab = new JLabel("Parent: ");
-			if (response == null) {parentField = new JTextField(15);}
+			if (response == null) {parentField = new JTextField(currentNode.getParent().toString(),15);}
 			else {parentField = new JTextField(response, 15);}
 			
 			actorLab = new JLabel("Actors: ");
@@ -100,7 +100,7 @@ public class FrameNode extends JFrame {
 			add(saveButton, BorderLayout.PAGE_END);
 		
 		//Adds content to infoPanel
-			infoPanel.add(branchCheck, BorderLayout.NORTH);
+			infoPanel.add(endCheck, BorderLayout.NORTH);
 			
 			infoPanel.add(parentLab, BorderLayout.NORTH);
 			infoPanel.add(parentField, BorderLayout.NORTH);
@@ -120,6 +120,14 @@ public class FrameNode extends JFrame {
 		return nodeName;
 	}
 	
+	public JCheckBox getEndCheck() {
+		return endCheck;
+	}
+
+	public JTextField getParentField() {
+		return parentField;
+	}
+
 	public JTextField getActorField() {
 		return actorField;
 	}
@@ -134,6 +142,11 @@ public class FrameNode extends JFrame {
 	
 	public String getNodeName() {
 		return nodeName;
+	}
+	
+	
+	public SpeechNode getCurrentNode() {
+		return currentNode;
 	}
 	
 	

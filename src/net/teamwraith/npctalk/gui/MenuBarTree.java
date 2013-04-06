@@ -32,10 +32,10 @@ public class MenuBarTree extends JMenuBar {
 		add(file);
 		file.add(newDialogue);
 		file.add(newNode);
-		file.add(new MenuSeparator());
+		file.add(new MenuSeparator(Color.LIGHT_GRAY));
 		file.add(refresh);
 		file.add(saveDialogue);
-		file.add(new MenuSeparator());
+		file.add(new MenuSeparator(Color.LIGHT_GRAY));
 		file.add(exit);
 		add(help);
 		help.add(about);
@@ -54,8 +54,8 @@ public class MenuBarTree extends JMenuBar {
 	/* separates menu, duh */
 	public class MenuSeparator extends JSeparator {
 		
-		public MenuSeparator() {
-			setForeground(Color.LIGHT_GRAY);
+		public MenuSeparator(Color color) {
+			setForeground(color);
 		}
 		
 	}
