@@ -22,7 +22,7 @@ public class Formatter {
 		File file = new File(fileName +".wd");
 		speechContent = new ArrayList<String>();
 		
-		addPlayerLine();
+		AddRespond();
 		if (!isSpeechEmpty()) {
 			addActor();
 			addSpeech();
@@ -34,14 +34,14 @@ public class Formatter {
 		speechContent = null;
 	}
 
-	private void addPlayerLine() {
-		SpeechNode currentNode = guiListener.getGUI().getMainFrame().currentNode();
+	private void AddRespond() {
+		SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
 		String line = null;
 		if (currentNode.isRoot()) {
 			line = "Dialogue: " + currentNode.toString()+"\r\n";
 		}
 		else {
-			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + currentRespond() + "] " + 
+			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + currentRespondNr() + "] " + 
 			currentNode.getParent().toString()  + " {\r\n";	//TODO make it right via using scenename later.
 		}
 		
@@ -72,7 +72,7 @@ public class Formatter {
 	}
 	
 	private void addReturn() {
-		SpeechNode currentNode = guiListener.getGUI().getMainFrame().currentNode();
+		SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
 		String line = null;
 		if (currentNode.isLeaf()){
 			line = "RETURN [" + (currentNode.getLevel()+1) + "]";
@@ -90,8 +90,8 @@ public class Formatter {
 			return false;
 	}
 	
-	private int currentRespond() {
-		SpeechNode currentNode = guiListener.getGUI().getMainFrame().currentNode();
+	private int currentRespondNr() {
+		SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
 		int i;
 		i = currentNode.getParent().getIndex(currentNode) + 1;
 		return i;

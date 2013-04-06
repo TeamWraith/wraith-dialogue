@@ -31,24 +31,24 @@ public class GUIListener {
 	
 	public GUIListener() {
 		gui = new GUIBuild();
-		formatter = new Formatter(this);
+		formatter = new Formatter(getGUIListener());
 		
 		gui.getMainFrame().getTree().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				// React ENTER when it's pressed and an item is selected in the tree.
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					String name = gui.getMainFrame().currentNode().toString();
+					String name = gui.getMainFrame().getCurrentNode().toString();
 					boolean isEnd = false;
 					String parent;
-					if (gui.getMainFrame().currentNode().isRoot())
-						parent = gui.getMainFrame().currentNode().toString();
+					if (gui.getMainFrame().getCurrentNode().isRoot())
+						parent = gui.getMainFrame().getCurrentNode().toString();
 					else
-						parent = gui.getMainFrame().currentNode().getParent().toString();
+						parent = gui.getMainFrame().getCurrentNode().getParent().toString();
 					String[] actors = null;
-					int sceneRow = gui.getMainFrame().currentNode().getLevel();				//TODO Make accurate in case of several on the same level
-					int sceneNr = gui.getMainFrame().currentNode().getSiblingCount();		//TODO Make each node have separate number instead of the total count of siblings
+					int sceneRow = gui.getMainFrame().getCurrentNode().getLevel();				//TODO Make accurate in case of several on the same level
+					int sceneNr = gui.getMainFrame().getCurrentNode().getSiblingCount();		//TODO Make each node have separate number instead of the total count of siblings
 					String speech = null;
-					gui.buildNodeFrame(name, isEnd, parent, actors, sceneRow, sceneNr, speech, getGUIListener());
+					gui.buildNodeFrame(getGUIListener());
 				}
 				else if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) {
 					gui.getMainFrame().addNode();

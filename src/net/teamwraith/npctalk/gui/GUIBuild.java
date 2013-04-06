@@ -18,13 +18,8 @@ public class GUIBuild {
 
 	}
 	
-	public void buildNodeFrame(String name, boolean isEnd, String parent, String[] actors,int sceneRow,int sceneNr, String speech, GUIListener guiListener) {
-		nodeFrame = new FrameNode(name, isEnd, parent, actors, sceneRow, sceneNr, speech);
-		guiListener.enableNodeFrameListeners();
-	}
-	
-	public void buildNodeFrame(String name, GUIListener guiListener) {
-		nodeFrame = new FrameNode(name);
+	public void buildNodeFrame(GUIListener guiListener) {
+		nodeFrame = new FrameNode(guiListener);
 		guiListener.enableNodeFrameListeners();
 	}
 

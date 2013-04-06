@@ -37,19 +37,22 @@ public class FrameNode extends JFrame {
 	//name of the node that is beeing edited
 		private String nodeName;
 		
-
+	//
+		private SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
 		
 	//Used for getting a proper position within the screen.
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
 	final int displayHeight = gd.getDisplayMode().getHeight();
 
-	public FrameNode(String name){
-		loadNode(name, false, null, null, 1, 1, null);
-	}
-	
-	public FrameNode(String name, boolean isEnd, String parent, String[] actors,int sceneRow,int sceneNr, String speech) {
-		loadNode(name, isEnd, parent, actors, sceneRow, sceneNr, speech);
+	public FrameNode(GUIListener guiListener) {		//TODO Make SpeechNode contain these next all the info under
+		loadNode( currentNode.toString()
+				, isEnd
+				, currentNode.getParent().toString()
+				, actors
+				, currentNode.getCurrentChoiceNode()
+				, currentNode.getParent().getIndex(currentNode) + 1
+				, speech);
 	}
 	
 	public void loadNode(String name, boolean isEnd, String parent, String[] actors,int sceneRow,int sceneNr, String speech){

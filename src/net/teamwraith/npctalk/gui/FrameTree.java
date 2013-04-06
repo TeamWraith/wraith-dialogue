@@ -86,7 +86,7 @@ public class FrameTree extends JFrame {
 	}
 	
 	public void setRoot(String rootNode) {
-		this.rootNode = new SpeechNode(0, rootNode);
+		this.rootNode = new SpeechNode(1, rootNode);
 		tree.setVisible(true);
 	}
 	
@@ -113,11 +113,15 @@ public class FrameTree extends JFrame {
 	}
 	
 	public void addNode() {
-		SpeechNode child = new SpeechNode(currentChoice(), "New Node" + newNodeSuffix++);
-		currentNode().add(child);
+		SpeechNode child;
+		if (getCurrentNode().isLeaf())
+			child = new SpeechNode(getCurrentChoice()+1, "New Node" + newNodeSuffix++);
+		else
+			child = new SpeechNode(getCurrentChoice(), "New Node" + newNodeSuffix++);
+		
+		getCurrentNode().add(child);
 		tree.updateUI();
 		tree.expandRow(tree.getMinSelectionRow());
-		
 	}
 
 	public SpeechNode getRootNode() {
@@ -132,16 +136,13 @@ public class FrameTree extends JFrame {
 		return newNodeBtn;
 	}
 
-	public SpeechNode currentNode() {
+	public SpeechNode getCurrentNode() {
 		SpeechNode index = null;
 		TreePath indexPath = tree.getSelectionPath();
 		if (indexPath == null)
 			index = rootNode;
 		else
 			index = (SpeechNode) indexPath.getLastPathComponent();
-		
-
-		System.out.println("root is: "+rootNode +"\r\nCurrent count: "+ (getNodeCount()));
 		return index;
 	}
 	
@@ -157,10 +158,19 @@ public class FrameTree extends JFrame {
 		return nodeCount;
 	}
 	
-	private int currentChoice() {
-		int i = getNodeCount()-
-				getRootNode().getLeafCount(); //Move over to 
+	public int getBranchCount() {
+		return getNodeCount(tree.getModel(), tree.getModel().getRoot(), 1) - getRootNode().getLeafCount();
+	}
+	
+	private int getCurrentChoice() {
+		int i;
+		if (getCurrentNode() == null)
+			i = 0;
+		else
+			i = getBranchCount();
 		return i;
 	}
+	
+
 }
 	
