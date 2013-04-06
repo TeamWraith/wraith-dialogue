@@ -19,7 +19,7 @@ import javax.swing.text.BadLocationException;
 public class FrameNode extends JFrame {
 
 	//panels within nodeFrame
-	private JPanel infoPanel = new JPanel();;
+	private JPanel infoPanel = new JPanel();
 	private JScrollPane speechPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
 		
 	//infoPanel - content
@@ -36,70 +36,65 @@ public class FrameNode extends JFrame {
 	//save node button
 	private JButton saveButton;
 
-	//name of the node that is beeing edited
+	//name of the node that is being edited
 	private String nodeName;
-		
-	//
+	
 	private SpeechNode currentNode;
-		
-	
-	
 		
 	//Used for getting a proper position within the screen.
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
 	final int displayHeight = gd.getDisplayMode().getHeight();
 
-	public FrameNode(GUIListener guiListener) {		//TODO Make SpeechNode contain these next all the info under
+	public FrameNode(GUIListener guiListener) {
 		currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
+		String name = currentNode.toString();
+		int responseNr;
 		
-		int i;
-		if (currentNode.getParent() == null) {i = 0;}
-		else {i = currentNode.getParent().getIndex(currentNode) + 1;}
+		if (currentNode.isRoot()) {
+			responseNr = 0;
+		} else {
+			responseNr = currentNode.getParent().getIndex(currentNode) + 1;
+		}
 		
-		loadNode( currentNode.toString()
-				, currentNode.isEnd()
-				, currentNode.getResponse()
-				, currentNode.getActor()
-				, currentNode.getCurrentChoiceNode()
-				, i
-				, currentNode.getSpeech());
-	}
-	
-	public void loadNode(String name, boolean isEnd, String response, String actor,int currentChoice,int responseNr, String speech){
-		
-		nodeName = name;
-		setTitle("Node Edit - "+nodeName);
+		setTitle("Node Edit - "+name);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 640, 360);
 		setMinimumSize(new Dimension(640, 120));
 		
-		//infoPanel - content
+		// infoPanel - content
+		endCheck = new JCheckBox("End of dialogue.", currentNode.isEnd());
 		
-		endCheck = new JCheckBox("is end", isEnd);
-			
+		// declare parent
 		parentLab = new JLabel("Parent: ");
-		if (response == null) {
-				
-			if (currentNode.getParent() == null) 
-			{parentField = new JTextField(currentNode.toString(),15);}
-			else 
-			{parentField = new JTextField(currentNode.getParent().toString(),15);}
-			
+		if (currentNode.getResponse() == null) {
+			if (currentNode.getParent() == null) {
+				parentField = new JTextField(currentNode.toString(),15);
+			} else {
+				parentField = new JTextField(currentNode.getParent().toString(),15);
+			}
+		} else {
+			parentField = new JTextField(currentNode.getResponse(), 15);
 		}
-		else {parentField = new JTextField(response, 15);}
 		
 		actorLab = new JLabel("Actors: ");
-		if (actor == null) {actorField = new JTextField(15);}
-		else {actorField = new JTextField(actor, 15);}
+		if (currentNode.getActor() == null) {
+			actorField = new JTextField(15);
+		} else {
+			actorField = new JTextField(currentNode.getActor(), 15);
+		}
 		
-		sceneLab = new JLabel("Scene: " + currentChoice +" - "+ responseNr); //Later, have parameters or a method giving in the scenenumber
+		// TODO have parameters or a method giving the scene number
+		sceneLab = new JLabel("Scene: " + currentNode.getCurrentChoiceNode() +" - "+ currentNode.getResponse()); 
 		
 		saveButton = new JButton("Save Node");
 		
 		//speechPanel - textArea
-		if (speech == null) {speechField = new JTextArea();}
-		else {speechField = new JTextArea(speech);}
+		if (currentNode.getSpeech() == null) {
+			speechField = new JTextArea();
+		} else {
+			speechField = new JTextArea(currentNode.getSpeech());
+		}
 			
 		//Adds panels to node nodeFrame
 		add(infoPanel, BorderLayout.PAGE_START);
@@ -120,7 +115,6 @@ public class FrameNode extends JFrame {
 		//Adds textArea to speechPanel
 		speechPanel.setViewportView(getSpeechField());
 		setVisible(true);	
-
 	}
 
 	public JCheckBox getEndCheck() {
