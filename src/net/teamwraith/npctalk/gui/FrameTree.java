@@ -86,7 +86,7 @@ public class FrameTree extends JFrame {
 	}
 	
 	public void setRoot(String rootNode) {
-		this.rootNode = new SpeechNode(1, rootNode);
+		this.rootNode = new SpeechNode(0, rootNode);
 		tree.setVisible(true);
 	}
 	

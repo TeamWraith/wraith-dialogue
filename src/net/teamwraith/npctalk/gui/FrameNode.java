@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,32 +14,36 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.text.BadLocationException;
 
 public class FrameNode extends JFrame {
 
 	//panels within nodeFrame
-		private JPanel infoPanel = new JPanel();;
-		private JScrollPane speechPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
+	private JPanel infoPanel = new JPanel();;
+	private JScrollPane speechPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);;
 		
 	//infoPanel - content
-		private JCheckBox branchCheck;
-		private JLabel parentLab;
-		private JLabel actorLab;
-		private JLabel sceneLab;
-		private JTextField parentField;
-		private JTextField actorField;
+	private JCheckBox branchCheck;
+	private JLabel parentLab;
+	private JLabel actorLab;
+	private JLabel sceneLab;
+	private JTextField parentField;
+	private JTextField actorField;
 		
 	//speechPanel - textArea
-		private JTextArea speechField;
+	private JTextArea speechField;
 		
 	//save node button
-		private JButton saveButton;
+	private JButton saveButton;
 
 	//name of the node that is beeing edited
-		private String nodeName;
+	private String nodeName;
 		
 	//
-		private SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
+	private SpeechNode currentNode;
+		
+	
+	
 		
 	//Used for getting a proper position within the screen.
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -46,16 +51,21 @@ public class FrameNode extends JFrame {
 	final int displayHeight = gd.getDisplayMode().getHeight();
 
 	public FrameNode(GUIListener guiListener) {		//TODO Make SpeechNode contain these next all the info under
+		currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
+		int i;
+		if (currentNode.getParent() == null) {i = 0;}
+		else {i = currentNode.getParent().getIndex(currentNode) + 1;}
+		
 		loadNode( currentNode.toString()
-				, isEnd
-				, currentNode.getParent().toString()
-				, actors
+				, currentNode.isEnd()
+				, currentNode.getResponse()
+				, currentNode.getActor()
 				, currentNode.getCurrentChoiceNode()
-				, currentNode.getParent().getIndex(currentNode) + 1
-				, speech);
+				, i
+				, currentNode.getSpeech());
 	}
 	
-	public void loadNode(String name, boolean isEnd, String parent, String[] actors,int sceneRow,int sceneNr, String speech){
+	public void loadNode(String name, boolean isEnd, String response, String actor,int currentChoice,int responseNr, String speech){
 		
 		nodeName = name;
 		setTitle("Node Edit - "+nodeName);
@@ -64,23 +74,25 @@ public class FrameNode extends JFrame {
 		setMinimumSize(new Dimension(640, 120));
 		
 		//infoPanel - content
+		
 			branchCheck = new JCheckBox("is end", isEnd);
 			
 			parentLab = new JLabel("Parent: ");
-			parentField = new JTextField(parent, 15);
-			parentField.setEditable(false);
+			if (response == null) {parentField = new JTextField(15);}
+			else {parentField = new JTextField(response, 15);}
 			
 			actorLab = new JLabel("Actors: ");
+			if (actor == null) {actorField = new JTextField(15);}
+			else {actorField = new JTextField(actor, 15);}
 			
-			if (actors == null) {actorField = new JTextField(15);}
-			else {actorField = new JTextField(actors.toString(), 15);} //TODO separate actors with commas.
-			
-			sceneLab = new JLabel("Scene: " + sceneRow +" - "+ sceneNr); //Later, have parameters or a method giving in the scenenumber
+			sceneLab = new JLabel("Scene: " + currentChoice +" - "+ responseNr); //Later, have parameters or a method giving in the scenenumber
 			
 			saveButton = new JButton("Save Node");
 		
 		//speechPanel - textArea
-			speechField = new JTextArea(speech);
+			if (speech == null) {speechField = new JTextArea();}
+			else {speechField = new JTextArea(speech);}
+			
 			
 		//Adds panels to node nodeFrame
 			add(infoPanel, BorderLayout.PAGE_START);
@@ -104,6 +116,10 @@ public class FrameNode extends JFrame {
 			setVisible(true);	
 	}
 
+	private String formatLines() { //TODO Make this return the speech formatted with \r\n by using a method similar to the "runLines" in Formatter.java
+		return nodeName;
+	}
+	
 	public JTextField getActorField() {
 		return actorField;
 	}
@@ -119,6 +135,7 @@ public class FrameNode extends JFrame {
 	public String getNodeName() {
 		return nodeName;
 	}
+	
 	
 
 }
