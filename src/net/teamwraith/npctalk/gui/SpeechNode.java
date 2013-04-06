@@ -45,10 +45,10 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		super.remove(aChild);
 	}
 	
-	public void assignInfo(boolean isEnder, String actor, String response, String speech) {
-		setEnd(isEnder);
+	public void assignInfo(boolean isEnd, String actor, String response, String speech,GUIBuild guiBuild) {
+		setEnd(isEnd);
 		setActor(actor);
-		setResponse(response);
+		setResponse(response, guiBuild);
 		setSpeech(speech);
 	}
 	
@@ -73,7 +73,10 @@ public class SpeechNode extends DefaultMutableTreeNode {
 	public String getResponse() {
 		return response;
 	}
-	public void setResponse(String response) {
+	public void setResponse(String response, GUIBuild gui) {
+		if (!this.isRoot())
+			((DefaultMutableTreeNode) this.getParent()).setUserObject(response);
+		gui.getMainFrame().getTree().updateUI();
 		this.response = response;
 	}
 	public String getSpeech() {

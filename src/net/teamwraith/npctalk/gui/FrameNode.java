@@ -52,6 +52,7 @@ public class FrameNode extends JFrame {
 
 	public FrameNode(GUIListener guiListener) {		//TODO Make SpeechNode contain these next all the info under
 		currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
+		
 		int i;
 		if (currentNode.getParent() == null) {i = 0;}
 		else {i = currentNode.getParent().getIndex(currentNode) + 1;}
@@ -75,51 +76,53 @@ public class FrameNode extends JFrame {
 		
 		//infoPanel - content
 		
-			endCheck = new JCheckBox("is end", isEnd);
+		endCheck = new JCheckBox("is end", isEnd);
 			
-			parentLab = new JLabel("Parent: ");
-			if (response == null) {parentField = new JTextField(currentNode.getParent().toString(),15);}
-			else {parentField = new JTextField(response, 15);}
+		parentLab = new JLabel("Parent: ");
+		if (response == null) {
+				
+			if (currentNode.getParent() == null) 
+			{parentField = new JTextField(currentNode.toString(),15);}
+			else 
+			{parentField = new JTextField(currentNode.getParent().toString(),15);}
 			
-			actorLab = new JLabel("Actors: ");
-			if (actor == null) {actorField = new JTextField(15);}
-			else {actorField = new JTextField(actor, 15);}
-			
-			sceneLab = new JLabel("Scene: " + currentChoice +" - "+ responseNr); //Later, have parameters or a method giving in the scenenumber
-			
-			saveButton = new JButton("Save Node");
+		}
+		else {parentField = new JTextField(response, 15);}
+		
+		actorLab = new JLabel("Actors: ");
+		if (actor == null) {actorField = new JTextField(15);}
+		else {actorField = new JTextField(actor, 15);}
+		
+		sceneLab = new JLabel("Scene: " + currentChoice +" - "+ responseNr); //Later, have parameters or a method giving in the scenenumber
+		
+		saveButton = new JButton("Save Node");
 		
 		//speechPanel - textArea
-			if (speech == null) {speechField = new JTextArea();}
-			else {speechField = new JTextArea(speech);}
-			
+		if (speech == null) {speechField = new JTextArea();}
+		else {speechField = new JTextArea(speech);}
 			
 		//Adds panels to node nodeFrame
-			add(infoPanel, BorderLayout.PAGE_START);
-			add(speechPanel, BorderLayout.CENTER);
-			add(saveButton, BorderLayout.PAGE_END);
+		add(infoPanel, BorderLayout.PAGE_START);
+		add(speechPanel, BorderLayout.CENTER);
+		add(saveButton, BorderLayout.PAGE_END);
 		
 		//Adds content to infoPanel
-			infoPanel.add(endCheck, BorderLayout.NORTH);
-			
-			infoPanel.add(parentLab, BorderLayout.NORTH);
-			infoPanel.add(parentField, BorderLayout.NORTH);
-			
-			infoPanel.add(actorLab, BorderLayout.NORTH);
-			infoPanel.add(actorField, BorderLayout.NORTH);
-			
-			infoPanel.add(sceneLab, BorderLayout.NORTH);
+		infoPanel.add(endCheck, BorderLayout.NORTH);
+		
+		infoPanel.add(parentLab, BorderLayout.NORTH);
+		infoPanel.add(parentField, BorderLayout.NORTH);
+		
+		infoPanel.add(actorLab, BorderLayout.NORTH);
+		infoPanel.add(actorField, BorderLayout.NORTH);
+		
+		infoPanel.add(sceneLab, BorderLayout.NORTH);
 		
 		//Adds textArea to speechPanel
-			speechPanel.setViewportView(getSpeechField());
-			
-			setVisible(true);	
+		speechPanel.setViewportView(getSpeechField());
+		setVisible(true);	
+
 	}
 
-	private String formatLines() { //TODO Make this return the speech formatted with \r\n by using a method similar to the "runLines" in Formatter.java
-		return nodeName;
-	}
-	
 	public JCheckBox getEndCheck() {
 		return endCheck;
 	}
@@ -143,7 +146,6 @@ public class FrameNode extends JFrame {
 	public String getNodeName() {
 		return nodeName;
 	}
-	
 	
 	public SpeechNode getCurrentNode() {
 		return currentNode;

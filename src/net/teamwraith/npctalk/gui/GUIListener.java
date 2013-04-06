@@ -122,10 +122,11 @@ public class GUIListener {
 					setSpeech(gui.getNodeFrame().getSpeechField().getText());
 					formatter.runLines(gui.getNodeFrame().getNodeName());
 					gui.getNodeFrame().getCurrentNode().assignInfo(
-							gui.getNodeFrame().getEndCheck(), //TODO
+							gui.getNodeFrame().getEndCheck().isSelected(),
 							gui.getNodeFrame().getParentField().getText(),
 							gui.getNodeFrame().getActorField().getText(),
-							gui.getNodeFrame().getSpeechField().getText());
+							gui.getNodeFrame().getSpeechField().getText(),
+							gui);
 					gui.getNodeFrame().dispose();
 				}
 			}
@@ -135,6 +136,12 @@ public class GUIListener {
 			public void actionPerformed(ActionEvent e) {
 				setSpeech(gui.getNodeFrame().getSpeechField().getText());
 				formatter.runLines(gui.getNodeFrame().getNodeName());
+				gui.getNodeFrame().getCurrentNode().assignInfo(
+						gui.getNodeFrame().getEndCheck().isSelected(),
+						gui.getNodeFrame().getParentField().getText(),
+						gui.getNodeFrame().getActorField().getText(),
+						gui.getNodeFrame().getSpeechField().getText(),
+						gui);
 				gui.getNodeFrame().dispose();
 			}
 		});
