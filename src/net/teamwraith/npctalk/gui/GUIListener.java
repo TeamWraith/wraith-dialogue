@@ -95,15 +95,22 @@ public class GUIListener {
 	}
 
 	/**
-	 * Listeners for the disabled items in the TreeFrame.
+	 * Listeners for the items that require a tree in the TreeFrame.
 	 */
 	public void enableTreeListeners() {
 		gui.getMainMenuBar().getNewNode().setEnabled(true);
+		gui.getMainMenuBar().getSaveDialogue().setEnabled(true);
 		gui.getMainFrame().getNewNodeBtn().setEnabled(true);
 		
 		gui.getMainMenuBar().getNewNode().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gui.getMainFrame().addNode();
+			}
+		});
+		
+		gui.getMainMenuBar().getSaveDialogue().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				formatter.runLines(gui.getMainFrame().getRootNode().toString());
 			}
 		});
 		
@@ -122,17 +129,14 @@ public class GUIListener {
 			public void keyPressed(KeyEvent e) {
 				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_S) {
 					setSpeech(gui.getNodeFrame().getSpeechField().getText());
-					formatter.runLines(gui.getNodeFrame().getNodeName());
 					gui.getNodeFrame().getCurrentNode().assignInfo(
 							gui.getNodeFrame().getEndCheck().isSelected(),
-							gui.getNodeFrame().getParentField().getText(),
+							gui.getNodeFrame().getResponseField().getText(),
 							gui.getNodeFrame().getActorField().getText(),
-							gui.getNodeFrame().getSpeechField().getText());
+							gui.getNodeFrame().getSpeechField().getText(),
+							formattedSpeech());
 					gui.getNodeFrame().dispose();
-					
-					for (int i=0; i < gui.getMainFrame().getNodeCount(); i++) {
-						System.out.println("This is:" +gui.getMainFrame().getNodes()[i]);
-					}
+
 				}
 			}
 		});
@@ -140,12 +144,12 @@ public class GUIListener {
 		gui.getNodeFrame().getSaveButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSpeech(gui.getNodeFrame().getSpeechField().getText());
-				formatter.runLines(gui.getNodeFrame().getNodeName());
 				gui.getNodeFrame().getCurrentNode().assignInfo(
 						gui.getNodeFrame().getEndCheck().isSelected(),
-						gui.getNodeFrame().getParentField().getText(),
+						gui.getNodeFrame().getResponseField().getText(),
 						gui.getNodeFrame().getActorField().getText(),
-						gui.getNodeFrame().getSpeechField().getText());
+						gui.getNodeFrame().getSpeechField().getText(),
+						formattedSpeech());
 				gui.getNodeFrame().dispose();
 			}
 		});
@@ -170,10 +174,17 @@ public class GUIListener {
 			try {
 				int start = gui.getNodeFrame().getSpeechField().getLineStartOffset(i);
 				int end = gui.getNodeFrame().getSpeechField().getLineEndOffset(i);
-				speechContent.add("\t\t" + getGUIListener().getSpeech().substring(start, end));
+				speechContent.add(getGUIListener().getSpeech().substring(start, end));
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
+		}
+		String[] speechArray = speechContent.toArray(new String[speechContent.size()]);
+		String formattedSpeech = "\t\t";
+		for(int i = 0; i < speechArray.length; i++) {
+			formattedSpeech = formattedSpeech + speechArray[i] + "\r\n";
+		}
+		return formattedSpeech;
 	}
 	
 }

@@ -6,12 +6,12 @@ import javax.swing.tree.MutableTreeNode;
 public class SpeechNode extends DefaultMutableTreeNode {
 
 	private boolean end = false;
-	private String actor;
-	private String response;
-	private String speech;
-	private String formattedSpeech;
+	private String actor = null;
+	private String response = null;
+	private String speech = null;
+	private String formattedSpeech = null;
 	
-	private int currentChoiceNode;
+	private int currentChoiceNode = 0;
 	
 	
 	public SpeechNode(int currentChoice) {
@@ -43,11 +43,12 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		super.remove(aChild);
 	}
 	
-	public void assignInfo(boolean isEnd, String response, String actor, String speech) {
+	public void assignInfo(boolean isEnd, String response, String actor, String speech, String formattedSpeech) {
 		setEnd(isEnd);
-		setActor(actor);
 		setResponse(response);
+		setActor(actor);
 		setSpeech(speech);
+		setFormattedSpeech(formattedSpeech);
 	}
 	
 	public int getCurrentChoiceNode() {
@@ -87,7 +88,7 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		return formattedSpeech;
 	}
 
-	public void setFormattedResponse(String formattedSpeech) {
+	public void setFormattedSpeech(String formattedSpeech) {
 		this.formattedSpeech = formattedSpeech;
 	}
 

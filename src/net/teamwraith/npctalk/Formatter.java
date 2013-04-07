@@ -14,6 +14,7 @@ public class Formatter {
 	private GUIListener guiListener;
 	private List<String> speechContent = new ArrayList<String>(); 
 	private SpeechNode currentNode;
+	private int lastChoiceNode = 0;
 
 	public Formatter(GUIListener guiListener) {
 		this.guiListener = guiListener;
@@ -24,35 +25,48 @@ public class Formatter {
 		
 		for (int i=0; i < guiListener.getGUI().getMainFrame().getNodeCount(); i++) {
 			currentNode = guiListener.getGUI().getMainFrame().getNodes()[i];
+			
+			
+			if (lastChoiceNode < currentNode.getCurrentChoiceNode()) {
+				addChoices();
+			}
+			addResponse();
+			if (!(currentNode.getSpeech() == null)) {
+				addActor();
+				addSpeech();
+			}
+			if (currentNode.isEnd()) {
+				
+			}
+			addReturn();
+			lastChoiceNode = currentNode.getCurrentChoiceNode();
 		}
-		addResponse();
-		if (!isSpeechEmpty()) {
-			addActor();
-			addSpeech();
-		}
-		addReturn();
 		Files.writeRawFile(
 			speechContent.toArray(new String[speechContent.size()]), file
 		);
 		speechContent = null;
 	}
 
+	private void addChoices() {
+		String line = "CHOICES [" + (lastChoiceNode+1) + "]";
+		speechContent.add(line);
+	}
+
 	private void addResponse() {
 		String line = null;
 		if (currentNode.isRoot()) {
-			line = "Dialogue: " + currentNode.toString()+"\r\n";
+			line = "Dialogue: " + "THIS TODO"+"\r\n";
 		}
 		else {
 			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + currentRespondNr() + "] " + 
-			currentNode.getParent().toString()  + " {\r\n";	//TODO make it right via using scenename later.
+			currentNode.getResponse()  + " {\r\n";	//TODO make it right via using scenename later.
 		}
-		
 		speechContent.add(line);
 	}
 
 	private void addActor() {
 		String line = null;
-		if (currentNode.getActor().isEmpty()) {
+		if (currentNode.getActor() == null) {
 			line = "\tUNNAMED:";
 		} else {
 			line = "\t" + currentNode.getActor().toUpperCase() + ":";
@@ -71,14 +85,13 @@ public class Formatter {
 		}
 		String line = null;
 		if (currentNode.isLeaf()) {line = "RETURN [" + currentNode.getCurrentChoiceNode() + "]";}
-		else {line = "RETURN [" + (currentNode.getCurrentChoiceNode()+1) + "]";}
+		else {line = "RETURN [" + (currentNode.getCurrentChoiceNode()+1) + "]"+ "\r\n}";}
 		speechContent.add(line);
 	}
 	
-	private boolean isSpeechEmpty() {
-		return currentNode.getSpeech().isEmpty();
+	private void addEnd() {
+		speechContent.add("END\r\n");
 	}
-	
 	private int currentRespondNr() {
 		return currentNode.getParent().getIndex(currentNode) + 1;
 	}

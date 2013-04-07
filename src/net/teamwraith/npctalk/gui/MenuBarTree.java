@@ -28,7 +28,8 @@ public class MenuBarTree extends JMenuBar {
 	public MenuBarTree() {
 		
 		newNode.setEnabled(false);
-				
+		saveDialogue.setEnabled(false);
+		
 		add(file);
 		file.add(newDialogue);
 		file.add(newNode);
@@ -46,6 +47,8 @@ public class MenuBarTree extends JMenuBar {
 	public JMenuItem getNewNode() { return newNode; }
 	
 	public JMenuItem getRefresh() { return refresh; }
+	
+	public JMenuItem getSaveDialogue() { return saveDialogue; }
 	
 	public JMenuItem getExit() { return exit; }
 	

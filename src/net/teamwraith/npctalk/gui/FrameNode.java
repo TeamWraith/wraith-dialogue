@@ -27,7 +27,7 @@ public class FrameNode extends JFrame {
 	private JLabel parentLab;
 	private JLabel actorLab;
 	private JLabel sceneLab;
-	private JTextField parentField;
+	private JTextField responseField;
 	private JTextField actorField;
 		
 	//speechPanel - textArea
@@ -59,25 +59,25 @@ public class FrameNode extends JFrame {
 		
 		setTitle("Node Edit - "+nodeName);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 640, 360);
-		setMinimumSize(new Dimension(640, 120));
+		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 660, 360);
+		setMinimumSize(new Dimension(660, 120));
 		
 		// infoPanel - content
 		endCheck = new JCheckBox("Dialogue end.", currentNode.isEnd());
 		
 		// declare parent
-		parentLab = new JLabel("Parent: ");
+		parentLab = new JLabel("Response: ");
 		if (currentNode.getResponse() == null) {
 			if (currentNode.getParent() == null) {
-				parentField = new JTextField(currentNode.toString(),15);
+				responseField = new JTextField(15);
 			} else {
-				parentField = new JTextField(currentNode.getParent().toString(),15);
+				responseField = new JTextField(15);
 			}
 		} else {
-			parentField = new JTextField(currentNode.getResponse(), 15);
+			responseField = new JTextField(currentNode.getResponse(), 15);
 		}
 		
-		actorLab = new JLabel("Actors: ");
+		actorLab = new JLabel("Actor: ");
 		if (currentNode.getActor() == null) {
 			actorField = new JTextField(15);
 		} else {
@@ -104,7 +104,7 @@ public class FrameNode extends JFrame {
 		infoPanel.add(endCheck, BorderLayout.NORTH);
 		
 		infoPanel.add(parentLab, BorderLayout.NORTH);
-		infoPanel.add(parentField, BorderLayout.NORTH);
+		infoPanel.add(responseField, BorderLayout.NORTH);
 		
 		infoPanel.add(actorLab, BorderLayout.NORTH);
 		infoPanel.add(actorField, BorderLayout.NORTH);
@@ -120,8 +120,8 @@ public class FrameNode extends JFrame {
 		return endCheck;
 	}
 
-	public JTextField getParentField() {
-		return parentField;
+	public JTextField getResponseField() {
+		return responseField;
 	}
 
 	public JTextField getActorField() {
