@@ -9,23 +9,21 @@ public class SpeechNode extends DefaultMutableTreeNode {
 	private String actor;
 	private String response;
 	private String speech;
+	private String formattedSpeech;
 	
 	private int currentChoiceNode;
 	
 	
 	public SpeechNode(int currentChoice) {
 		currentChoiceNode = currentChoice;
-		System.out.println(currentChoiceNode);
 	}
 	public SpeechNode(int currentChoice ,Object userObject) {
 		super(userObject);
 		currentChoiceNode = currentChoice;
-		System.out.println(currentChoiceNode);
 	}
 	public SpeechNode(int currentChoice, Object userObject, boolean allowsChildren) {
 		super(userObject, allowsChildren);
 		currentChoiceNode = currentChoice;
-		System.out.println(currentChoiceNode);
 	}
 
 	/**
@@ -45,10 +43,10 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		super.remove(aChild);
 	}
 	
-	public void assignInfo(boolean isEnd, String actor, String response, String speech,GUIBuild guiBuild) {
+	public void assignInfo(boolean isEnd, String response, String actor, String speech) {
 		setEnd(isEnd);
 		setActor(actor);
-		setResponse(response, guiBuild);
+		setResponse(response);
 		setSpeech(speech);
 	}
 	
@@ -73,12 +71,11 @@ public class SpeechNode extends DefaultMutableTreeNode {
 	public String getResponse() {
 		return response;
 	}
-	public void setResponse(String response, GUIBuild gui) {
+	public void setResponse(String response) {
 		if (!this.isRoot())
-			((DefaultMutableTreeNode) this.getParent()).setUserObject(response);
-		gui.getMainFrame().getTree().updateUI();
 		this.response = response;
 	}
+
 	public String getSpeech() {
 		return speech;
 	}
@@ -86,5 +83,12 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		this.speech = speech;
 	}
 	
+	public String getFormattedSpeech() {
+		return formattedSpeech;
+	}
+
+	public void setFormattedResponse(String formattedSpeech) {
+		this.formattedSpeech = formattedSpeech;
+	}
 
 }

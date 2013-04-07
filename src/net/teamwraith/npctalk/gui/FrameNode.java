@@ -48,7 +48,7 @@ public class FrameNode extends JFrame {
 
 	public FrameNode(GUIListener guiListener) {
 		currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
-		String name = currentNode.toString();
+		nodeName = currentNode.toString();
 		int responseNr;
 		
 		if (currentNode.isRoot()) {
@@ -57,13 +57,13 @@ public class FrameNode extends JFrame {
 			responseNr = currentNode.getParent().getIndex(currentNode) + 1;
 		}
 		
-		setTitle("Node Edit - "+name);
+		setTitle("Node Edit - "+nodeName);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 640, 360);
 		setMinimumSize(new Dimension(640, 120));
 		
 		// infoPanel - content
-		endCheck = new JCheckBox("End of dialogue.", currentNode.isEnd());
+		endCheck = new JCheckBox("Dialogue end.", currentNode.isEnd());
 		
 		// declare parent
 		parentLab = new JLabel("Parent: ");
@@ -83,9 +83,8 @@ public class FrameNode extends JFrame {
 		} else {
 			actorField = new JTextField(currentNode.getActor(), 15);
 		}
-		
-		// TODO have parameters or a method giving the scene number
-		sceneLab = new JLabel("Scene: " + currentNode.getCurrentChoiceNode() +" - "+ currentNode.getResponse()); 
+
+		sceneLab = new JLabel("Scene: " + currentNode.getCurrentChoiceNode() +" - "+ responseNr); 
 		
 		saveButton = new JButton("Save Node");
 		

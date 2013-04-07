@@ -8,6 +8,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -16,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -160,6 +163,15 @@ public class FrameTree extends JFrame {
 	
 	public int getBranchCount() {
 		return getNodeCount(tree.getModel(), tree.getModel().getRoot(), 1) - getRootNode().getLeafCount();
+	}
+	
+	
+	public SpeechNode[] getNodes() {
+		List<SpeechNode> nodes = new ArrayList<SpeechNode>();
+		for (Enumeration e = ((SpeechNode) tree.getModel().getRoot()).preorderEnumeration(); e.hasMoreElements();) {
+			nodes.add((SpeechNode) e.nextElement());
+		}
+		return nodes.toArray(new SpeechNode[nodes.size()]);
 	}
 	
 	private int getCurrentChoice() {

@@ -21,6 +21,8 @@ import net.teamwraith.npctalk.Formatter;
  * 
  * @author Stektpotet
  * @author EternalFacepalm
+ * 
+ * TODO Make event methods or possibly even own classes
  */
 public class GUIListener {
 	
@@ -125,9 +127,12 @@ public class GUIListener {
 							gui.getNodeFrame().getEndCheck().isSelected(),
 							gui.getNodeFrame().getParentField().getText(),
 							gui.getNodeFrame().getActorField().getText(),
-							gui.getNodeFrame().getSpeechField().getText(),
-							gui);
+							gui.getNodeFrame().getSpeechField().getText());
 					gui.getNodeFrame().dispose();
+					
+					for (int i=0; i < gui.getMainFrame().getNodeCount(); i++) {
+						System.out.println("This is:" +gui.getMainFrame().getNodes()[i]);
+					}
 				}
 			}
 		});
@@ -140,8 +145,7 @@ public class GUIListener {
 						gui.getNodeFrame().getEndCheck().isSelected(),
 						gui.getNodeFrame().getParentField().getText(),
 						gui.getNodeFrame().getActorField().getText(),
-						gui.getNodeFrame().getSpeechField().getText(),
-						gui);
+						gui.getNodeFrame().getSpeechField().getText());
 				gui.getNodeFrame().dispose();
 			}
 		});
@@ -159,4 +163,17 @@ public class GUIListener {
 	public GUIListener getGUIListener() { return this; }
 
 	public GUIBuild getGUI() { return gui; }
+	
+	public String formattedSpeech() { //TODO
+		List<String> speechContent = new ArrayList<String>(); 
+		for (int i = 0; i < gui.getNodeFrame().getSpeechField().getLineCount(); i++) {
+			try {
+				int start = gui.getNodeFrame().getSpeechField().getLineStartOffset(i);
+				int end = gui.getNodeFrame().getSpeechField().getLineEndOffset(i);
+				speechContent.add("\t\t" + getGUIListener().getSpeech().substring(start, end));
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+	}
+	
 }

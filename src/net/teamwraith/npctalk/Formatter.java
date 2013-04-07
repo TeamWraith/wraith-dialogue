@@ -12,7 +12,8 @@ import net.teamwraith.npctalk.gui.SpeechNode;
 public class Formatter {
 	
 	private GUIListener guiListener;
-	private List<String> speechContent; 
+	private List<String> speechContent = new ArrayList<String>(); 
+	private SpeechNode currentNode;
 
 	public Formatter(GUIListener guiListener) {
 		this.guiListener = guiListener;
@@ -20,8 +21,10 @@ public class Formatter {
 	
 	public void runLines(String fileName) {
 		File file = new File(fileName +".wd");
-		speechContent = new ArrayList<String>();
 		
+		for (int i=0; i < guiListener.getGUI().getMainFrame().getNodeCount(); i++) {
+			currentNode = guiListener.getGUI().getMainFrame().getNodes()[i];
+		}
 		addResponse();
 		if (!isSpeechEmpty()) {
 			addActor();
@@ -35,7 +38,6 @@ public class Formatter {
 	}
 
 	private void addResponse() {
-		SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
 		String line = null;
 		if (currentNode.isRoot()) {
 			line = "Dialogue: " + currentNode.toString()+"\r\n";
@@ -50,43 +52,34 @@ public class Formatter {
 
 	private void addActor() {
 		String line = null;
-		if (guiListener.getGUI().getNodeFrame().getActorField().getText().isEmpty()) {
+		if (currentNode.getActor().isEmpty()) {
 			line = "\tUNNAMED:";
 		} else {
-			line = "\t" + guiListener.getGUI().getNodeFrame().getActorField().getText().toUpperCase() + ":";
+			line = "\t" + currentNode.getActor().toUpperCase() + ":";
 		}
 		speechContent.add(line);
 	}
 
 	private void addSpeech() {
-		for (int i = 0; i < guiListener.getGUI().getNodeFrame().getSpeechField().getLineCount(); i++) {
-			try {
-				int start = guiListener.getGUI().getNodeFrame().getSpeechField().getLineStartOffset(i);
-				int end = guiListener.getGUI().getNodeFrame().getSpeechField().getLineEndOffset(i);
-				speechContent.add("\t\t" + guiListener.getSpeech().substring(start, end));
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
+				speechContent.add(currentNode.getFormattedSpeech());
 	}
 	
 	private void addReturn() {
-		SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
-		String line = null;
-		if (currentNode.isLeaf()){
-			line = "RETURN [" + (currentNode.getLevel()+1) + "]";
-		} else {
-			line = "RETURN [" + (currentNode.getLevel()) + "]\r\n}"; //TODO make it set the right returnValue
+		
+		for (int i = 0; i < guiListener.getGUI().getMainFrame().getNodeCount();i++) {
+			
 		}
+		String line = null;
+		if (currentNode.isLeaf()) {line = "RETURN [" + currentNode.getCurrentChoiceNode() + "]";}
+		else {line = "RETURN [" + (currentNode.getCurrentChoiceNode()+1) + "]";}
 		speechContent.add(line);
 	}
 	
 	private boolean isSpeechEmpty() {
-		return guiListener.getGUI().getNodeFrame().getSpeechField().getText().isEmpty();
+		return currentNode.getSpeech().isEmpty();
 	}
 	
 	private int currentRespondNr() {
-		SpeechNode currentNode = guiListener.getGUI().getMainFrame().getCurrentNode();
 		return currentNode.getParent().getIndex(currentNode) + 1;
 	}
 	
