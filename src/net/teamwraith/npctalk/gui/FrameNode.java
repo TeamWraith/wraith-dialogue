@@ -24,7 +24,7 @@ public class FrameNode extends JFrame {
 		
 	//infoPanel - content
 	private JCheckBox endCheck;
-	private JLabel parentLab;
+	private JLabel responseLab;
 	private JLabel actorLab;
 	private JLabel sceneLab;
 	private JTextField responseField;
@@ -51,30 +51,29 @@ public class FrameNode extends JFrame {
 		nodeName = currentNode.toString();
 		int responseNr;
 		
-		if (currentNode.isRoot()) {
-			responseNr = 0;
-		} else {
-			responseNr = currentNode.getParent().getIndex(currentNode) + 1;
-		}
-		
 		setTitle("Node Edit - "+nodeName);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 660, 360);
 		setMinimumSize(new Dimension(660, 120));
 		
 		// infoPanel - content
-		endCheck = new JCheckBox("Dialogue end.", currentNode.isEnd());
+		endCheck = new JCheckBox("Dialogue end.", currentNode.isEnd()); //TODO Make this disable/enable childs for its node.
 		
 		// declare parent
-		parentLab = new JLabel("Response: ");
+		responseLab = new JLabel("Response: ");
 		if (currentNode.getResponse() == null) {
-			if (currentNode.getParent() == null) {
-				responseField = new JTextField(15);
-			} else {
-				responseField = new JTextField(15);
-			}
+			responseField = new JTextField(15);
 		} else {
 			responseField = new JTextField(currentNode.getResponse(), 15);
+		}
+		
+		if (currentNode.isRoot()) {
+			responseNr = 0;
+			responseField.setEditable(false);
+			responseField.setToolTipText("Players are not supposed to invoke a dialogue with words.");
+		} else {
+			responseNr = currentNode.getParent().getIndex(currentNode) + 1;
+			responseField.setToolTipText("The players response to invoke this part of the dialogue.");
 		}
 		
 		actorLab = new JLabel("Actor: ");
@@ -83,7 +82,6 @@ public class FrameNode extends JFrame {
 		} else {
 			actorField = new JTextField(currentNode.getActor(), 15);
 		}
-
 		sceneLab = new JLabel("Scene: " + currentNode.getCurrentChoiceNode() +" - "+ responseNr); 
 		
 		saveButton = new JButton("Save Node");
@@ -94,7 +92,12 @@ public class FrameNode extends JFrame {
 		} else {
 			speechField = new JTextArea(currentNode.getSpeech());
 		}
-			
+		
+		endCheck.setToolTipText("If checked this node will end the dialogue (And disable branching from this node).");
+		actorField.setToolTipText("The actor that answers to the player's response.");
+		sceneLab.setToolTipText("The current scene; dialogue branch nr. - response nr.");
+		speechField.setToolTipText("What the actor will say if the player invoke this part of the dialogue with his respose.");
+		
 		//Adds panels to node nodeFrame
 		add(infoPanel, BorderLayout.PAGE_START);
 		add(speechPanel, BorderLayout.CENTER);
@@ -103,7 +106,7 @@ public class FrameNode extends JFrame {
 		//Adds content to infoPanel
 		infoPanel.add(endCheck, BorderLayout.NORTH);
 		
-		infoPanel.add(parentLab, BorderLayout.NORTH);
+		infoPanel.add(responseLab, BorderLayout.NORTH);
 		infoPanel.add(responseField, BorderLayout.NORTH);
 		
 		infoPanel.add(actorLab, BorderLayout.NORTH);

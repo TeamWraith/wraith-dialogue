@@ -36,7 +36,7 @@ public class Formatter {
 				addSpeech();
 			}
 			if (currentNode.isEnd()) {
-				
+				addEnd();
 			}
 			addReturn();
 			lastChoiceNode = currentNode.getCurrentChoiceNode();
@@ -59,7 +59,7 @@ public class Formatter {
 		}
 		else {
 			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + currentRespondNr() + "] " + 
-			currentNode.getResponse()  + " {\r\n";	//TODO make it right via using scenename later.
+			currentNode.getResponse()  + " {\r\n";
 		}
 		speechContent.add(line);
 	}

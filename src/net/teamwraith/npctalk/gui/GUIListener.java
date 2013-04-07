@@ -34,21 +34,10 @@ public class GUIListener {
 		gui = new GUIBuild();
 		formatter = new Formatter(getGUIListener());
 		
-		gui.getMainFrame().getTree().addKeyListener(new KeyAdapter() {
+		gui.getMainFrame().getTree().addKeyListener(new KeyAdapter() { //TODO check possibilities for double-clicking once more
 			public void keyPressed(KeyEvent e) {
 				// React ENTER when it's pressed and an item is selected in the tree.
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					String name = gui.getMainFrame().getCurrentNode().toString();
-					boolean isEnd = false;
-					String parent;
-					if (gui.getMainFrame().getCurrentNode().isRoot())
-						parent = gui.getMainFrame().getCurrentNode().toString();
-					else
-						parent = gui.getMainFrame().getCurrentNode().getParent().toString();
-					String[] actors = null;
-					int sceneRow = gui.getMainFrame().getCurrentNode().getLevel();				
-					int sceneNr = gui.getMainFrame().getCurrentNode().getSiblingCount();	
-					String speech = null;
 					gui.buildNodeFrame(getGUIListener());
 				}
 				else if (e.getKeyCode() == KeyEvent.VK_N && e.isControlDown()) {
@@ -168,7 +157,7 @@ public class GUIListener {
 
 	public GUIBuild getGUI() { return gui; }
 	
-	public String formattedSpeech() { //TODO
+	public String formattedSpeech() {
 		List<String> speechContent = new ArrayList<String>(); 
 		for (int i = 0; i < gui.getNodeFrame().getSpeechField().getLineCount(); i++) {
 			try {

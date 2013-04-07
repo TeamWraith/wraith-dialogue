@@ -73,7 +73,6 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		return response;
 	}
 	public void setResponse(String response) {
-		if (!this.isRoot())
 		this.response = response;
 	}
 

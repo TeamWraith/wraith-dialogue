@@ -107,7 +107,7 @@ public class FrameTree extends JFrame {
 		tree.setVisible(false);
 	}
 
-	public void newTree() {
+	public void newTree() { //TODO add popup for what the dialogue shall be named.
 		newNodeSuffix = 1;
 		clearAll();
 		setRoot("New Node" + newNodeSuffix++);
@@ -115,6 +115,7 @@ public class FrameTree extends JFrame {
 		tree.setSelectionRow(0);
 	}
 	
+	//TODO Make nodenames more suitable, maybe have [scenenr. - responsenr.] there instead?
 	public void addNode() {
 		SpeechNode child;
 		if (getCurrentNode().isLeaf())
