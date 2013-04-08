@@ -10,8 +10,10 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolTip;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -88,7 +90,12 @@ public class FrameTree extends JFrame {
 		tree.setVisible(false);
 	}
 
-	public void newTree() { //TODO add pop up for what the dialogue shall be named.
+	public void newTree() { //TODO add something that tells the user "you need to put in a name for the dialogue" if the input is empty
+		JOptionPane treeNamer = new JOptionPane();
+		String input = treeNamer.showInputDialog(null, "Input new dialogue name: ", "Chose your name for the dialogue", 1);
+		if (input == null) {return;}
+		else if (input.isEmpty()) {newTree(); return;}
+		setTitle("Wraith Dialogue - " + input);
 		newNodeSuffix = 1;
 		clearAll();
 		setRoot("New Node" + newNodeSuffix++);

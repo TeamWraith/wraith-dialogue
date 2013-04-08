@@ -97,7 +97,7 @@ public class GUIListener {
 		
 		gui.getMainMenuBar().getSaveDialogue().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				formatter.runLines(gui.getMainFrame().getRootNode().toString());
+				formatter.runLines(gui.getMainFrame().getTitle().toString().substring(18));
 			}
 		});
 		

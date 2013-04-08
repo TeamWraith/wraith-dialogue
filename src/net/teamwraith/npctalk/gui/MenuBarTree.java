@@ -7,6 +7,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+//TODO make user able to edit the dialogue name later on from a menuitem.
 @SuppressWarnings("serial")
 public class MenuBarTree extends JMenuBar {
 	
