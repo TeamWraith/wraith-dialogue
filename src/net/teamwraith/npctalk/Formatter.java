@@ -14,10 +14,24 @@ public class Formatter {
 	private SpeechNode currentNode;
 	private int lastChoiceNode = 0;
 
+	/**
+	 * The formatter class will format the current dialogue's into one
+	 * readable document. 
+	 * 
+	 * @param guiListener - gets the current GUIListener so that the 
+	 * formatter from there can read the info needed. This should always
+	 * be the GUIListener the program is using at the moment.
+	 */
 	public Formatter(GUIListener guiListener) {
 		this.guiListener = guiListener;
 	}
 	
+	/**
+	 * Will run the lines within the dialogue through
+	 * the formatting process.
+	 * 
+	 * @param fileName - Sets the output-file's filename.
+	 */
 	public void runLines(String fileName) {
 		File file = new File(fileName +".wd");
 		
@@ -44,24 +58,32 @@ public class Formatter {
 		);
 		speechContent = null;
 	}
-
+	/**
+	 * Adds "choice split-up" in the dialogue.
+	 */
 	private void addChoices() {
 		String line = "CHOICES [" + (lastChoiceNode+1) + "]";
 		speechContent.add(line);
 	}
-
+	
+	/**
+	 * Adds the scene declaration and the player's response 
+	 * (to the choice) in the dialogue.
+	 */
 	private void addResponse() {
 		String line = null;
 		if (currentNode.isRoot()) {
 			line = "Dialogue: " + "THIS TODO"+"\r\n";
 		}
 		else {
-			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + currentRespondNr() + "] " + 
+			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + (currentNode.getParent().getIndex(currentNode)+1) + "] " + 
 			currentNode.getResponse()  + " {\r\n";
 		}
 		speechContent.add(line);
 	}
-
+	/**
+	 * Adds the actor's, whom the player is talking to, name (Uppercased).
+	 */
 	private void addActor() {
 		String line = null;
 		if (currentNode.getActor() == null) {
@@ -71,11 +93,16 @@ public class Formatter {
 		}
 		speechContent.add(line);
 	}
-
+	/**
+	 * Adds the actor's speech to the dialogue.
+	 */
 	private void addSpeech() {
 				speechContent.add(currentNode.getFormattedSpeech());
 	}
-	
+	/**
+	 * Adds the return value that declears which "choice split-up" 
+	 * the player will end up in after his last choice.
+	 */
 	private void addReturn() {
 		
 		for (int i = 0; i < guiListener.getGUI().getMainFrame().getNodeCount();i++) {
@@ -87,11 +114,11 @@ public class Formatter {
 		speechContent.add(line);
 	}
 	
+	/**
+	 * Used for dialogue nodes that ends the dialogue.
+	 */
 	private void addEnd() {
 		speechContent.add("END\r\n");
 	}
-	private int currentRespondNr() {
-		return currentNode.getParent().getIndex(currentNode) + 1;
-	}
-	
+
 }

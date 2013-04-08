@@ -176,6 +176,7 @@ public class FrameTree extends JFrame {
 		return nodes.toArray(new SpeechNode[nodes.size()]);
 	}
 	
+	
 	private int getCurrentChoice() {
 		if (getCurrentNode() == null) {
 			return 0;

@@ -27,9 +27,7 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		currentChoiceNode = currentChoice;
 	}
 
-	/**
-	 * TODO Check if remove method messes up the currentChoiceNode count
-	 */
+	//TODO Check if remove method messes up the currentChoiceNode count
 	public void remove(int childIndex) { 
 		if (!this.getChildAt(childIndex).isLeaf()) {
 			currentChoiceNode--;

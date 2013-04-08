@@ -23,7 +23,7 @@ public class Files {
 	 * 
 	 * @param lines - array of the lines to be
 	 * written to a file.
-	 * @param file - the file to write to; if it
+	 * @param file - the file to write to; if it 
 	 * doesn't exist, it'll be created.
 	 */
 	public static void writeRawFile (String[] lines, File file) {
