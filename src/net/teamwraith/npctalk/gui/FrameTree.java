@@ -1,38 +1,23 @@
 package net.teamwraith.npctalk.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
-
-
-/**
- * 
- * @author stektpotet 
- *	Created for decency, as the earlier tests were failiures. Also it's simpler to implement a pure, 
- *	fully working tree from another class, than creating it directly into the GUI-building class.
- */
-
+@SuppressWarnings("serial")
 public class FrameTree extends JFrame {
 
 	private JPanel contentPane;
@@ -78,8 +63,6 @@ public class FrameTree extends JFrame {
 		clearAll();
 	}
 
-	
-	
 	/**
 	 * For modifying the root nodes name.
 	 */
@@ -93,8 +76,6 @@ public class FrameTree extends JFrame {
 		tree.setVisible(true);
 	}
 	
-
-	
 	/**
 	 *  Methods for clearing the tree.
 	 */
@@ -107,7 +88,7 @@ public class FrameTree extends JFrame {
 		tree.setVisible(false);
 	}
 
-	public void newTree() { //TODO add popup for what the dialogue shall be named.
+	public void newTree() { //TODO add pop up for what the dialogue shall be named.
 		newNodeSuffix = 1;
 		clearAll();
 		setRoot("New Node" + newNodeSuffix++);
@@ -169,19 +150,20 @@ public class FrameTree extends JFrame {
 	
 	public SpeechNode[] getNodes() {
 		List<SpeechNode> nodes = new ArrayList<SpeechNode>();
-		for (Enumeration e = ((SpeechNode) tree.getModel().getRoot()).preorderEnumeration(); e.hasMoreElements();) {
+		for (
+			Enumeration<?> e = ((SpeechNode) tree.getModel().getRoot()).preorderEnumeration(); 
+			e.hasMoreElements();
+		) {
 			nodes.add((SpeechNode) e.nextElement());
 		}
 		return nodes.toArray(new SpeechNode[nodes.size()]);
 	}
 	
 	private int getCurrentChoice() {
-		int i;
-		if (getCurrentNode() == null)
-			i = 0;
-		else
-			i = getBranchCount();
-		return i;
+		if (getCurrentNode() == null) {
+			return 0;
+		}
+		return getBranchCount();
 	}
 	
 

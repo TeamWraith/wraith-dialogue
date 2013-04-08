@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.text.BadLocationException;
-
 import net.teamwraith.npctalk.gui.GUIListener;
 import net.teamwraith.npctalk.gui.SpeechNode;
 

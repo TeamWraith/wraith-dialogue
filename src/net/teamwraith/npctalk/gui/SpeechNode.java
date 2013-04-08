@@ -3,6 +3,7 @@ package net.teamwraith.npctalk.gui;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+@SuppressWarnings("serial")
 public class SpeechNode extends DefaultMutableTreeNode {
 
 	private boolean end = false;
