@@ -31,15 +31,12 @@ public class FrameTree extends JFrame {
 	private JButton newNodeBtn;
 	
 	private int newNodeSuffix = 1;
-
-	
 	
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
 	final int displayHeight = gd.getDisplayMode().getHeight();
 	
 	public FrameTree() {
-		
 		setTitle("Wraith Dialogue");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 512, 640);
@@ -56,8 +53,9 @@ public class FrameTree extends JFrame {
 		newNodeBtn.setEnabled(false);
 
 		tree.setModel(treeModel);
-			
-		tree.setEditable(true); // Possibly we could make the edited object in the tree update from this, as well as the node editor frame.
+		
+		// Possibly we could make the edited object in the tree update from this, as well as the node editor frame.
+		tree.setEditable(true); 
 		contentPane.add(treePanel);
 		contentPane.add(newNodeBtn, BorderLayout.PAGE_END);
 		treePanel.setViewportView(tree);
@@ -66,7 +64,7 @@ public class FrameTree extends JFrame {
 	}
 
 	/**
-	 * For modifying the root nodes name.
+	 * For modifying the root node's name.
 	 */
 	public void setRoot(SpeechNode rootNode) {
 		this.rootNode = rootNode;
@@ -79,7 +77,7 @@ public class FrameTree extends JFrame {
 	}
 	
 	/**
-	 *  Methods for clearing the tree.
+	 * Method for clearing the tree.
 	 */
 	public void clearNodes() {
 	    rootNode.removeAllChildren();
@@ -89,16 +87,21 @@ public class FrameTree extends JFrame {
 		clearNodes();
 		tree.setVisible(false);
 	}
-
-	public void newTree() { //TODO add something that tells the user "you need to put in a name for the dialogue" if the input is empty
-		JOptionPane treeNamer = new JOptionPane();
-		String input = treeNamer.showInputDialog(null, "Input new dialogue name: ", "Chose your name for the dialogue", 1);
-		if (input == null) {return;}
-		else if (input.isEmpty()) {newTree(); return;}
+	
+	//TODO add something that tells the user "you need to put in a name for the dialogue" if the input is empty
+	public void newTree() { 
+		String input = JOptionPane.showInputDialog(null, "Enter new dialogue name: ", "Wraith Dialogue - Choose dialogue name", 1);
+		if (input == null) {
+			return;
+		} else if (input.isEmpty()) {
+			newTree(); 
+			return;
+		}
 		setTitle("Wraith Dialogue - " + input);
 		newNodeSuffix = 1;
 		clearAll();
-		setRoot("New Node" + newNodeSuffix++);
+		// TODO This line should be able to be shortened.
+		setRoot("0 - 0");
 		tree.setModel(new DefaultTreeModel(rootNode));
 		tree.setSelectionRow(0);
 	}
@@ -106,10 +109,20 @@ public class FrameTree extends JFrame {
 	//TODO Make nodenames more suitable, maybe have [scenenr. - responsenr.] there instead?
 	public void addNode() {
 		SpeechNode child;
-		if (getCurrentNode().isLeaf())
-			child = new SpeechNode(getCurrentChoice()+1, "New Node" + newNodeSuffix++);
-		else
-			child = new SpeechNode(getCurrentChoice(), "New Node" + newNodeSuffix++);
+		String title = getCurrentNode().getCurrentChoiceNode()+1 + " - ";
+		
+		// This is a fucking mess and I am sorry.
+		if (getCurrentNode().isRoot()) {
+			title += getCurrentNode().getChildCount() + 1;
+		} else {
+			title += "yeah I don't know dammit.";
+		}
+		
+		if (getCurrentNode().isLeaf()) {
+			child = new SpeechNode(getCurrentChoice()+1, title);
+		} else {
+			child = new SpeechNode(getCurrentChoice(), title);
+		}
 		
 		getCurrentNode().add(child);
 		tree.updateUI();
@@ -129,13 +142,10 @@ public class FrameTree extends JFrame {
 	}
 
 	public SpeechNode getCurrentNode() {
-		SpeechNode index = null;
 		TreePath indexPath = tree.getSelectionPath();
 		if (indexPath == null)
-			index = rootNode;
-		else
-			index = (SpeechNode) indexPath.getLastPathComponent();
-		return index;
+			return rootNode;
+		return (SpeechNode) indexPath.getLastPathComponent();
 	}
 	
 	public int getNodeCount() {

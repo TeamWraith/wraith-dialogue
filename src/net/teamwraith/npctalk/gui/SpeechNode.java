@@ -18,7 +18,7 @@ public class SpeechNode extends DefaultMutableTreeNode {
 	public SpeechNode(int currentChoice) {
 		currentChoiceNode = currentChoice;
 	}
-	public SpeechNode(int currentChoice ,Object userObject) {
+	public SpeechNode(int currentChoice, Object userObject) {
 		super(userObject);
 		currentChoiceNode = currentChoice;
 	}

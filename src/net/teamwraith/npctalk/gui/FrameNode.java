@@ -72,7 +72,7 @@ public class FrameNode extends JFrame {
 			responseField.setToolTipText("Players are not supposed to invoke a dialogue with words.");
 		} else {
 			responseNr = currentNode.getParent().getIndex(currentNode) + 1;
-			responseField.setToolTipText("The players response to invoke this part of the dialogue.");
+			responseField.setToolTipText("The player's response invoking this part of the dialogue.");
 		}
 		
 		actorLab = new JLabel("Actor: ");
