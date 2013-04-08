@@ -25,9 +25,9 @@ public class FrameTree extends JFrame {
 	private JPanel contentPane;
 	
 	private SpeechNode rootNode = new SpeechNode(0);
-	private TreeModel treeModel;
+	private TreeModel treeModel = new DefaultTreeModel(rootNode);
 	
-	private JTree tree = new JTree(treeModel);
+	private JTree tree = new JTree();
 	private JButton newNodeBtn;
 	
 	private int newNodeSuffix = 1;
@@ -51,11 +51,11 @@ public class FrameTree extends JFrame {
 		
 		newNodeBtn = new JButton("New Node");
 		newNodeBtn.setEnabled(false);
-
+		
 		tree.setModel(treeModel);
 		
 		// Possibly we could make the edited object in the tree update from this, as well as the node editor frame.
-		tree.setEditable(true); 
+		tree.setEditable(false); 
 		contentPane.add(treePanel);
 		contentPane.add(newNodeBtn, BorderLayout.PAGE_END);
 		treePanel.setViewportView(tree);
@@ -67,13 +67,14 @@ public class FrameTree extends JFrame {
 	 * For modifying the root node's name.
 	 */
 	public void setRoot(SpeechNode rootNode) {
-		this.rootNode = rootNode;
+		this.rootNode.setUserObject(rootNode);
 		tree.setVisible(true);
 	}
 	
 	public void setRoot(String rootNode) {
-		this.rootNode = new SpeechNode(0, rootNode);
+		this.rootNode.setUserObject(rootNode);
 		tree.setVisible(true);
+		tree.updateUI();
 	}
 	
 	/**
@@ -98,33 +99,23 @@ public class FrameTree extends JFrame {
 			return;
 		}
 		setTitle("Wraith Dialogue - " + input);
+		
 		newNodeSuffix = 1;
 		clearAll();
 		// TODO This line should be able to be shortened.
-		setRoot("0 - 0");
-		tree.setModel(new DefaultTreeModel(rootNode));
+		setRoot("Init");
 		tree.setSelectionRow(0);
 	}
 	
 	//TODO Make nodenames more suitable, maybe have [scenenr. - responsenr.] there instead?
 	public void addNode() {
 		SpeechNode child;
-		String title = getCurrentNode().getCurrentChoiceNode()+1 + " - ";
-		
-		// This is a fucking mess and I am sorry.
-		if (getCurrentNode().isRoot()) {
-			title += getCurrentNode().getChildCount() + 1;
-		} else {
-			title += "yeah I don't know dammit.";
-		}
-		
-		if (getCurrentNode().isLeaf()) {
-			child = new SpeechNode(getCurrentChoice()+1, title);
-		} else {
-			child = new SpeechNode(getCurrentChoice(), title);
-		}
-		
+		if (getCurrentNode().isLeaf()) 
+		{child = new SpeechNode(getCurrentChoice()+1, "New Node" + newNodeSuffix++);}
+		else 
+		{child = new SpeechNode(getCurrentChoice(), "New Node" + newNodeSuffix++);}
 		getCurrentNode().add(child);
+		child.setUserObject("[" + (getCurrentNode().getCurrentChoiceNode()+1) + " - " + (child.getParent().getIndex(child)+1) + "]");
 		tree.updateUI();
 		tree.expandRow(tree.getMinSelectionRow());
 	}

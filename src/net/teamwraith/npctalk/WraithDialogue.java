@@ -9,3 +9,4 @@ public class WraithDialogue {
 	}
 	
 }
+//TODO Add Undo/Redo methods.

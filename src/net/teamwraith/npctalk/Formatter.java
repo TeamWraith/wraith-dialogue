@@ -13,6 +13,7 @@ public class Formatter {
 	private List<String> speechContent = new ArrayList<String>(); 
 	private SpeechNode currentNode;
 	private int lastChoiceNode = 0;
+	private String dialogueName = null;
 
 	/**
 	 * The formatter class will format the current dialogue's into one
@@ -34,7 +35,7 @@ public class Formatter {
 	 */
 	public void runLines(String fileName) {
 		File file = new File(fileName +".wd");
-		
+		dialogueName = fileName;
 		for (int i=0; i < guiListener.getGUI().getMainFrame().getNodeCount(); i++) {
 			currentNode = guiListener.getGUI().getMainFrame().getNodes()[i];
 			
@@ -73,7 +74,7 @@ public class Formatter {
 	private void addResponse() {
 		String line = null;
 		if (currentNode.isRoot()) {
-			line = "Dialogue: " + "THIS TODO"+"\r\n";
+			line = "Dialogue: " + dialogueName +"\r\n";
 		}
 		else {
 			line = "\t[" + currentNode.getCurrentChoiceNode() + " - " + (currentNode.getParent().getIndex(currentNode)+1) + "] " + 
