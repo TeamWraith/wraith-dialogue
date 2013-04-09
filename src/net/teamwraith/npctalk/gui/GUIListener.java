@@ -88,10 +88,23 @@ public class GUIListener {
 		gui.getMainMenuBar().getNewNode().setEnabled(true);
 		gui.getMainMenuBar().getSaveDialogue().setEnabled(true);
 		gui.getMainFrame().getNewNodeBtn().setEnabled(true);
+		gui.getMainFrame().getRemoveNodeBtn().setEnabled(true);
 		
 		gui.getMainMenuBar().getNewNode().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gui.getMainFrame().addNode();
+			}
+		});
+		
+		gui.getMainFrame().getNewNodeBtn().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gui.getMainFrame().addNode();
+			}
+		});
+		
+		gui.getMainFrame().getRemoveNodeBtn().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				gui.getMainFrame().removeNode();
 			}
 		});
 		
@@ -101,11 +114,7 @@ public class GUIListener {
 			}
 		});
 		
-		gui.getMainFrame().getNewNodeBtn().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				gui.getMainFrame().addNode();
-			}
-		});
+
 	}
 	
 	/**

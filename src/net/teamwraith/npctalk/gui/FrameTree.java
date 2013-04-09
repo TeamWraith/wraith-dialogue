@@ -1,6 +1,7 @@
 package net.teamwraith.npctalk.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -8,13 +9,16 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JToolTip;
 import javax.swing.JTree;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -22,15 +26,19 @@ import javax.swing.tree.TreePath;
 @SuppressWarnings("serial")
 public class FrameTree extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel contentPane = new JPanel();
+	private JPanel buttonPane = new JPanel();
 	
 	private SpeechNode rootNode = new SpeechNode(0);
 	private TreeModel treeModel = new DefaultTreeModel(rootNode);
 	
 	private JTree tree = new JTree();
 	private JButton newNodeBtn;
+	private JButton removeNodeBtn;
 	
-	private int newNodeSuffix = 1;
+	private JButton btn02;
+	private JButton btn01;
+	
 	
 	final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	final int displayWidth = gd.getDisplayMode().getWidth();
@@ -40,10 +48,11 @@ public class FrameTree extends JFrame {
 		setTitle("Wraith Dialogue");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(displayWidth/2 - 256, displayHeight/2 - 320, 512, 640);
-		setMinimumSize(new Dimension(256, 320));
+		setMinimumSize(new Dimension(340, 320));
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout());
+		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
 		
 		JScrollPane treePanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -51,13 +60,37 @@ public class FrameTree extends JFrame {
 		
 		newNodeBtn = new JButton("New Node");
 		newNodeBtn.setEnabled(false);
+		removeNodeBtn = new JButton("Delete Node");
+		removeNodeBtn.setEnabled(false);
+		
+		btn01 = new JButton("For later use");
+		btn02 = new JButton("For later use");
 		
 		tree.setModel(treeModel);
 		
 		// Possibly we could make the edited object in the tree update from this, as well as the node editor frame.
 		tree.setEditable(false); 
 		contentPane.add(treePanel);
-		contentPane.add(newNodeBtn, BorderLayout.PAGE_END);
+		contentPane.add(buttonPane, BorderLayout.EAST );
+		
+		
+		gl_buttonPane.setHorizontalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.LEADING)
+				.addComponent(newNodeBtn, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+				.addComponent(removeNodeBtn, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+				.addComponent(btn02, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+				.addComponent(btn01, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE));
+		
+		gl_buttonPane.setVerticalGroup(
+			gl_buttonPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_buttonPane.createSequentialGroup()
+					.addComponent(newNodeBtn)
+					.addComponent(removeNodeBtn)
+					.addComponent(btn02)
+					.addComponent(btn01)));
+		
+		buttonPane.setLayout(gl_buttonPane);
+		
 		treePanel.setViewportView(tree);
 		setVisible(true);
 		clearAll();
@@ -100,7 +133,6 @@ public class FrameTree extends JFrame {
 		}
 		setTitle("Wraith Dialogue - " + input);
 		
-		newNodeSuffix = 1;
 		clearAll();
 		// TODO This line should be able to be shortened.
 		setRoot("Init");
@@ -111,13 +143,19 @@ public class FrameTree extends JFrame {
 	public void addNode() {
 		SpeechNode child;
 		if (getCurrentNode().isLeaf()) 
-		{child = new SpeechNode(getCurrentChoice()+1, "New Node" + newNodeSuffix++);}
+		{child = new SpeechNode(getCurrentChoice()+1, "REFRESH FRAME");}
 		else 
-		{child = new SpeechNode(getCurrentChoice(), "New Node" + newNodeSuffix++);}
+		{child = new SpeechNode(getCurrentChoice(), "REFRESH FRAME");}
+		
 		getCurrentNode().add(child);
-		child.setUserObject("[" + (getCurrentNode().getCurrentChoiceNode()+1) + " - " + (child.getParent().getIndex(child)+1) + "]");
+		child.setUserObject("[" + child.getCurrentChoiceNode() + " - " + (child.getParent().getIndex(child)+1) + "]"); //TODO work on getCurrentChoiceNode for this.
 		tree.updateUI();
 		tree.expandRow(tree.getMinSelectionRow());
+	}
+	
+	public void removeNode() {
+		((SpeechNode) getCurrentNode().getParent()).remove(getCurrentNode());
+		tree.updateUI();
 	}
 
 	public SpeechNode getRootNode() {
@@ -131,12 +169,20 @@ public class FrameTree extends JFrame {
 	public JButton getNewNodeBtn() {
 		return newNodeBtn;
 	}
+	
+	public JButton getRemoveNodeBtn() {
+		return removeNodeBtn;
+	}
 
 	public SpeechNode getCurrentNode() {
 		TreePath indexPath = tree.getSelectionPath();
 		if (indexPath == null)
 			return rootNode;
 		return (SpeechNode) indexPath.getLastPathComponent();
+	}
+	
+	public SpeechNode getParentNode() {
+		return (SpeechNode) getCurrentNode().getParent();
 	}
 	
 	public int getNodeCount() {

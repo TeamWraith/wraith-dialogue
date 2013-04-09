@@ -6,6 +6,8 @@ import javax.swing.tree.MutableTreeNode;
 @SuppressWarnings("serial")
 public class SpeechNode extends DefaultMutableTreeNode {
 
+	private String name = null;
+	
 	private boolean end = false;
 	private String actor = null;
 	private String response = null;
@@ -35,7 +37,7 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		super.remove(childIndex);
 	}
 	
-	public void remove(MutableTreeNode aChild) {
+	public void remove(SpeechNode aChild) {
 		if (!aChild.isLeaf()) {
 			currentChoiceNode--;
 		}
@@ -50,6 +52,13 @@ public class SpeechNode extends DefaultMutableTreeNode {
 		setFormattedSpeech(formattedSpeech);
 	}
 	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public int getCurrentChoiceNode() {
 		return currentChoiceNode;
 	}
